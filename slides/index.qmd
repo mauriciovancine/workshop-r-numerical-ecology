@@ -1,0 +1,2052 @@
+---
+title: "Introdução à Ecologia Numérica no R"
+subtitle: "Análise de dados multivariados <br> Agrupamento (cluster)"
+date: "2023-05-09"
+date-format: long
+author: "[Maurício Vancine](https://mauriciovancine.github.io/)"
+format: 
+  revealjs:
+    theme: [custom.scss]
+    slide-number: c/t
+    show-slide-number: all
+    hash-type: number
+    preview-links: false
+    chalkboard: true
+    logo: "img/logo.png"
+    execute:
+      echo: true
+      eval: true
+      warning: false
+      message: false
+editor: visual
+lang: pt
+---
+
+## Maurício Vancine
+
+::: columns
+::: {.column width="40%"}
+<center><br> ![](img/avatar.png) [`r icons::icon_style(icons::fontawesome("link"), fill = "#2268bc")`](https://mauriciovancine.github.io/) [`r icons::icon_style(icons::fontawesome("envelope", style = "solid"), fill = "#2268bc")`](mailto:mauricio.vancine@gmail.com) [`r icons::icon_style(icons::academicons("cv"), fill = "#2268bc")`](https://mauriciovancine.github.io/cv/cv-mauricio-vancine-pt-academic-complete.html) [`r icons::icon_style(icons::fontawesome("twitter"), fill = "#2268bc")`](https://twitter.com/mauriciovancine) [`r icons::icon_style(icons::fontawesome("github"), fill = "#2268bc")`](https://github.com/mauriciovancine) [`r icons::icon_style(icons::academicons("orcid"), fill = "#2268bc")`](https://orcid.org/0000-0001-9650-7575) [`r icons::icon_style(icons::academicons("lattes"), fill = "#2268bc")`](http://lattes.cnpq.br/9761288418931193)</center>
+:::
+
+::: {.column width="60%"}
+-   Ecólogo (2014)
+
+-   Doutorando em Ecologia (2020-2024)
+
+-   Ecologia Espacial
+
+-   Modelagem Ecológica
+
+-   Análise de Dados Geoespaciais
+
+-   Ecologia e Conservação de Anfíbios
+
+-   *Open source* \[R, QGIS, GRASS GIS, GNU/Linux, ...\]
+:::
+:::
+
+## Análises Ecológicas no R (2022)
+
+::: columns
+::: {.column width="40%"}
+<center><img src="img/aer.jpeg" href="https://analises-ecologicas.com/" style="width:90%"/></center>
+:::
+
+::: {.column width="60%"}
+-   15 capítulos: perguntas em ecologia, linguagem R, tidyverse, análises univariadas, multivariadas e geoespaciais
+
+-   [bookdown](https://analises-ecologicas.com/)
+
+-   [PDF](https://canal6.com.br/livreacesso/livro/analises-ecologicas-no-r/)
+
+-   [Amazon](https://www.amazon.com.br/An%C3%A1lises-ecol%C3%B3gicas-Ferdo-Rodrigues-Silva/dp/857917564X/ref=sr_1_1?keywords=9788579175640&qid=1654379366&sr=8-1)
+
+-   [Código Fonte](https://github.com/paternogbc/livro_aer)
+
+-   [YouTube](https://www.youtube.com/channel/UCLSVSCnmvf2k6OoWZCnEO4w)
+:::
+:::
+
+::: footer
+[Da Silva et al. (2022)](https://analises-ecologicas.com/)
+:::
+
+## Conteúdo
+
+<br><br><br>
+
+Tempo: 2 horas
+
+1.  Linguagem R (30 min.)
+2.  Análise exploratória de dados (30 min.)
+3.  Análise de dados multivariados (60 min.)
+
+## IMPORTANTE!!!
+
+**Estamos num espaço seguro e amigável**
+
+Sintam-se à vontade para me interromper e tirar dúvidas
+
+<center><img src="img/general_starwars_teamwork.png" style="width:50%"/></center>
+
+::: footer
+[\@allison_horst](https://twitter.com/allison_horst)
+:::
+
+# 1. Linguagem R
+
+## Definição
+
+O R é uma **linguagem de programação livre** (*open source*), direcionada à **manipulação, análise e visualização de dados**, com diversas **expansões** (*pacotes*) para **dados** ou **análises** específicas
+
+<center><img src="img/r_logo.svg" style="width:40%"/></center>
+
+::: footer
+[R](https://www.r-project.org/)
+:::
+
+## Histórico - Linguagem S {.smaller}
+
+**John M. Chambers (Stanford University, CA, EUA)**
+
+<br>
+
+**Versões**
+
+-   Old S (1976-1987)
+-   New S (1988-1997)
+-   S4 (1998)
+
+**IDE (*Integrated Development Environment*)**
+
+-   Interface: S-PLUS (1988-2008)
+
+![](img/person_john_chambers.jpg){.absolute width="400" height="400" right="10" top="200"}
+
+::: footer
+[Wickham (2013)](http://vita.had.co.nz/papers/r-s.pdf)
+:::
+
+## Histórico - Linguagem R {.smaller}
+
+**Robert Gentleman e Ross Ihaka (Auckland University, NZ)**
+
+<br>
+
+**Versões**
+
+-   Desenvolvimento (1993-2000)
+-   Versão 1 (2000-2004)
+-   Versão 2 (2004-2013)
+-   Versão 3 (2013-2020)
+-   Versão 4 (2020-atual)
+
+**IDE (*Integrated Development Environment*)**
+
+-   Interface: RStudio (2011-atual)
+-   Atualmente: **R Core Team**
+
+![](img/person_gentleman_ihaka.jpg){.absolute width="550" height="400" right="-50" top="200"}
+
+::: footer
+[Wickham (2013)](http://vita.had.co.nz/papers/r-s.pdf)
+:::
+
+## Histórico - Linguagem R {.smaller}
+
+::: columns
+::: {.column width="50%"}
+::: nonincremental
+<center><img src="img/r_history.png" style="width:75%"/></center>
+:::
+:::
+
+::: {.column width="50%"}
+::: nonincremental
+<center><img src="img/r_history_plot.png" style="width:100%"/></center>
+:::
+:::
+:::
+
+::: footer
+[Giorgi et al. (2022)](https://doi.org/10.3390/life12050648)
+:::
+
+## Aplicações {.smaller}
+
+**Manipulação, visualização e análise de dados**
+
+-   Estatísticas univariadas e multivariadas
+-   Análises de dados ecológicos
+-   Análise de dados espaciais, temporais e sonoros
+-   Análise de dados funcionais, genéticos e filogenéticos
+-   Análise de dados geoespaciais e sensoriamento remoto
+-   Visualização de todos os tipos de dados anteriores
+
+**R Markdown e quarto**
+
+-   Textos em HTML, PDF, Word, ODT, Markdown
+-   Slides, Websites, Blogs, Livros e Artigos
+-   Shiny
+
+![](img/r_markdown_output_formats.png){.absolute width="400" height="400" right="-100" top="150"} ![](img/quarto.png){.absolute width="400" height="100" right="-100" top="570"}
+
+::: footer
+[R Markdown](https://rmarkdown.rstudio.com/), [shiny](https://shiny.rstudio.com/), [quarto](https://quarto.org/)
+:::
+
+## IDE
+
+Ambiente de Desenvolvimento Integrado (*Integrated Development Environment*)
+
+<br><br>
+
+<center><img src="img/rstudio_logo.svg" style="width:80%"/></center>
+
+::: footer
+[RStudio](https://posit.co/downloads/)
+:::
+
+## IDE
+
+Ambiente de Desenvolvimento Integrado (*Integrated Development Environment*)
+
+![](img/r_rstudio01.png){.absolute width="700" height="180" right="180" top="200"} ![](img/r_rstudio02.png){.absolute width="700" height="280" right="180" top="370"}
+
+::: footer
+[Ismay & Kim (2020)](https://posit.co/downloads/)
+:::
+
+## Interface
+
+<center><img src="img/rstudio.png" style="width:100%"/></center>
+
+::: footer
+[RStudio](https://www.rstudio.com/)
+:::
+
+## Projeto R (.Rproj)
+
+-   Facilita o trabalho em múltiplos ambientes
+-   Cada projeto possui seu diretório, documentos e workspace
+-   Permite controle de versão (git e GitHub)
+
+<br>
+
+<center><img src="img/rstudio_project_logo.png" style="width:25%"/></center>
+
+::: footer
+[RStudio](https://www.rstudio.com/)
+:::
+
+# Antes de começarmos...
+
+## Conferindo os computadores
+
+<center><img src="img/general_hard_soft_bg.png" style="width:80%"/></center>
+
+::: footer
+[Café com Código](https://www.instagram.com/cafecomcodigo/?hl=pt)
+:::
+
+# 
+
+<center><img src="img/code.png" style="width:45%"/></center>
+
+## Console
+
+O console é onde a linguagem R instalada é carregada para executar os códigos
+
+<center><img src="img/rstudio_script.png" style="width:55%"/></center>
+
+::: footer
+[RStudio](https://www.rstudio.com/)
+:::
+
+## Console
+
+-   Na janela do console aparece o símbolo `>`, seguido de uma barra vertical `|` que fica piscando (cursor), onde digitamos ou enviamos nossos códigos do script
+
+-   Vamos digitar `10 + 2` e apertar a tecla `Enter` para que essa operação seja executada
+
+-   O resultado retorna o valor `12`, precedido do valor `1` entre colchetes `[1]`
+
+```{r}
+10 + 2
+```
+
+## Console
+
+-   Os colchetes `[]` demonstram a posição do elemento numa sequência de valores
+
+-   Vamos criar uma sequência usando o operador `:` para demonstrar isso
+
+-   O número que aparecer nos colchetes vai depender da largura das janelas
+
+```{r}
+1:42
+```
+
+## Console {.smaller}
+
+**Noções de programação**
+
+Número inteiro (*integer*)
+
+```{r}
+1
+```
+
+. . .
+
+Número decimal (*float* ou *double*)
+
+```{r}
+1.2
+```
+
+. . .
+
+Texto entre aspas simples (`''`) ou duplas (`""`) (*character* ou *string*)
+
+```{r}
+"Este é o número 1"
+```
+
+. . .
+
+Lógico (letras maiúsculas) (*booleano*)
+
+```{r}
+TRUE
+FALSE
+```
+
+## Script
+
+Onde os códigos são escritos e salvos no formato .R
+
+-   Atalho: `ctrl + shift + N`
+
+<center><img src="img/rstudio_script.jpg" style="width:80%"/></center>
+
+## Script
+
+-   Os códigos devem ser digitados preferencialmente no script
+
+-   Para executar um código, deixem o cursor em qualquer lugar da linha
+
+-   Atalho: `ctrl + enter`
+
+```{r}
+1
+```
+
+<br>
+
+```{r}
+1 + 2
+```
+
+## Script
+
+**Salvar um script**
+
+-   Atalho: `ctrl + S`
+
+<center><img src="img/rstudio_script.png" style="width:50%"/></center>
+
+## Script
+
+**Comentários (#)**
+
+-   Comentários não são lidos pelo R e descrevem informações em nosso script
+
+-   São representados pelo `#` (hash) ou `#'` (hash-linha)
+
+```{r}
+# comentarios
+# o r nao le o codigo depois do # (hash)
+
+42 # essas palavras nao sao executadas, apenas o 42
+```
+
+## Script
+
+**Comentários (#)**
+
+-   Sempre comece um script com um cabeçalho
+
+-   Ajuda a lembrar o que o script faz e quando foi escrito
+
+```{r}
+#' ----
+#' título: modelos estatisticos em ecologia
+#' autor: seu nome
+#' data: 2023-04-26
+#' ----
+```
+
+# 
+
+<center><img src="img/general_comment_gandalf.jpg" style="width:50%"/></center>
+
+## Operadores
+
+**Operadores aritméticos (retorna números)**
+
+| Operador |      Descrição       |   Uso   |
+|:--------:|:--------------------:|:-------:|
+|    \+    |        Adição        |  a + b  |
+|    --    |      Subtração       |  a - b  |
+|    \*    |    Multiplicação     | a \* b  |
+|    /     |       Divisão        |  a / b  |
+|    %%    |   Resto da divisão   | a %% b  |
+|   %/%    | Quociente da divisão | a %/% b |
+|    \^    |     Potenciação      |  a\^b   |
+
+## Operadores
+
+**Operadores relacionais (retorna TRUE\|FALSE)**
+
+| Operador |       Descrição       |   Uso    |
+|:--------:|:---------------------:|:--------:|
+|    \<    |         Menor         |  a \< b  |
+|    \>    |         Maior         |  a \> b  |
+|   \<=    |    Menor ou igual     | a \<= b  |
+|   \>=    |    Maior ou igual     | a \> = b |
+|    ==    |         Igual         |  a == b  |
+|    !=    | Não igual (diferente) |   a!=b   |
+
+## Operadores
+
+**Ordem das operações aritméticas**
+
+<br>
+
+`()` \> `^` \> `*` ou `/` \> `+` ou `-`
+
+<br>
+
+```{r}
+# sem especificar - segue a ordem das operações
+1 * 2 + 2 / 2 ^ 2
+```
+
+<br>
+
+```{r}
+# especificando - segue a ordem dos parênteses
+((1 * 2) + (2 / 2)) ^ 2
+```
+
+## Objetos
+
+Palavras que atribuímos (guardamos) dados possibilitando sua manipulação
+
+-   Atribuição (`<-`)
+
+-   palavra \<- dados
+
+-   Atalho: `alt + -`
+
+![](img/general_assign.jpg){.absolute width="380" height="480" right="50" top="200"}
+
+## Objetos
+
+Vamos atribuir o valor `10` à palavra `eco`
+
+```{r}
+# atribuicao - simbolo (<-)
+eco <- 10 
+```
+
+# 
+
+<center><img src="img/gif_where.gif" style="width:100%"/></center>
+
+## Objetos
+
+-   Sempre confira a atribuição
+
+-   **Dica**: chame o objeto novamente
+
+```{r}
+# atribuicao - simbolo (<-)
+eco <- 10 
+eco
+```
+
+## Objetos
+
+**Seja criativo**
+
+O R sobrescreve os valores dos objetos com o mesmo nome
+
+```{r}
+# eco vale 10
+eco <- 10 
+eco
+```
+
+<br>
+
+```{r}
+# agora eco vale 2
+eco <- 2 
+eco
+```
+
+## Objetos {.smaller}
+
+**Seja criativo, mas nem tanto...**
+
+O R tem limitações ao nomear objetos!
+
+1.  Começar por letras (`a-z` ou `A-Z`) ou pontos (`.`)
+
+2.  Conter letras (`a-z` ou `A-Z`), números (`0-9`), underscores (`_`) ou pontos (`.`)
+
+3.  *Case-sensitive*, i.e., ele difere letras maiúsculas de minúsculas
+
+4.  Evitar utilizar letras maiúsculas, acentos ou cedilha (`ç`)
+
+5.  Não podem ser iguais a nomes especiais: `break, else, FALSE, for, function, if, Inf, NA, NaN, next, repeat, return, TRUE, while`
+
+```{r error=TRUE}
+for <- 1
+```
+
+## Objetos
+
+**Ambiente (*Environment*)**
+
+Os objetos podem ser visualizados no painel *Environment*
+
+<center><img src="img/rstudio_script.png" style="width:50%"/></center>
+
+## Objetos
+
+Podemos utilizar objetos para fazer operações
+
+```{r}
+# definir dois objetos
+eco1 <- 10
+eco2 <- 2
+```
+
+. . .
+
+<br>
+
+```{r}
+# operacoes com objetos
+eco1 + eco2 # adicao
+eco1 - eco2 # subtracao
+eco1 * eco2 # multiplicacao
+eco1 / eco2 # divisao
+```
+
+## Objetos
+
+Podemos utilizar objetos para atribuir resultados de operações
+
+```{r}
+# operacoes com objetos e atribuicao
+adi <- eco1 + eco2 # adicao
+adi
+
+sub <- eco1 - eco2 # subtracao
+sub
+
+mul <- eco1 * eco2 # multiplicacao
+mul
+
+div <- eco1 / eco2 # divisao
+div
+```
+
+## Objetos
+
+**Tipos de objetos**
+
+<center><img src="img/r_data_structures_general.png" style="width:70%"/></center>
+
+## Funções {.smaller}
+
+Códigos que realizam operações em argumentos
+
+-   Estrutura de uma função:
+
+`nome_da_funcao(argumento1, argumento2)`
+
+<br>
+
+1.  **Nome da função**: remete ao que ela faz (inglês)
+2.  **Parênteses**: limitam a função
+3.  **Argumentos**: onde a função atuará
+4.  **Vírgulas**: separam os argumentos
+
+![](img/code_function_annotated.png){.absolute width="600" height="300" right="-100" top="350"}
+
+------------------------------------------------------------------------
+
+## Funções
+
+**Exemplos**
+
+```{r}
+# soma
+sum(10, 2)
+
+# soma de objetos
+sum(eco1, eco2)
+
+# soma de objetos atribuidos a objetos
+eco_sum <- sum(eco1, eco2)
+eco_sum
+```
+
+## Funções
+
+**Argumentos**
+
+Os argumentos podem ser de dois tipos:
+
+1.  **Objetos ou valores**: dados onde a função irá atuar
+
+2.  **Parâmetros**: mudam o comportamento da função (texto = `TRUE`, `FALSE` ou `"texto"`)
+
+```{r}
+sum(1, 2, 3, NA)
+sum(1, 2, 3, NA, na.rm = TRUE)
+```
+
+## Funções
+
+**Argumentos como valores**
+
+```{r}
+# funcoes - argumentos como valores
+sum(10, 2)
+prod(10, 2)
+```
+
+. . .
+
+**Argumentos como objetos**
+
+```{r}
+# funcoes - argumentos como objetos
+sum(eco1, eco2)
+prod(eco1, eco2)
+```
+
+## Funções
+
+**Argumentos como parâmetros**
+
+```{r}
+# repeticao - vezes
+rep(x = 1:5, times = 5)
+```
+
+<br>
+
+. . .
+
+```{r}
+# repeticao - cada
+rep(x = 1:5, each = 5)
+```
+
+## Funções
+
+**Atribuição de resultados a objetos**
+
+```{r}
+# atribuicao dos resultados
+rep_times <- rep(x = 1:5, times = 5)
+rep_times
+```
+
+<br>
+
+. . .
+
+```{r}
+rep_each <- rep(x = 1:5, each = 5)
+rep_each
+```
+
+## Funções
+
+**Atribuição, função e linha temporal**
+
+Criar dois objetos
+
+```{r}
+# criar dois objetos
+foo <- 2
+bar <- 3
+```
+
+Somar esses objetos e atribuição
+
+```{r}
+# somar e atribuir
+su <- sum(foo, bar)
+su
+```
+
+Raiz quadrada e atribuição
+
+```{r}
+# raiz e atribuir
+sq <- sqrt(su)
+sq
+```
+
+## Funções
+
+**Atribuição, função e linha temporal**
+
+1.  Atribuição de dados a objetos
+
+2.  Funções que operam e mudam esses dados
+
+3.  Nova atribuição desses resultados a novos objetos
+
+```{r}
+# criar dois objetos
+foo <- 2
+bar <- 3
+
+# somar e atribuir
+su <- sum(foo, bar)
+
+# raiz e atribuir
+sq <- sqrt(su)
+```
+
+## Ajuda {.smaller}
+
+Descreve as informações de uma função
+
+```{r eval=FALSE}
+# descreve as informacoes de uma funcao
+help("mean") # arquivo .html
+?mean
+```
+
+::: columns
+::: {.column width="50%"}
+![](img/r_help.png){.absolute width="450" height="450" right="600" top="220"}
+:::
+
+::: {.column width="50%"}
+<br> **Description**: descrição da função\
+**Usage**: uso da função e argumentos\
+**Arguments**: argumentos e suas especificações\
+**Details**: detalhes da função\
+**Value**: interpretar a saída (*output*)\
+**Note**: notas sobre a função\
+**Authors**: autores da função\
+**References**: referências bibliográficas da função\
+**See also**: funções relacionadas\
+**Examples**: exemplos do uso da função
+:::
+:::
+
+## Pacotes
+
+Conjunto de funções extras para executar tarefas específicas
+
+<center><img src="img/r_packages.svg" style="width:70%"/></center>
+
+## Pacotes
+
+Duas fontes
+
+-   CRAN (*Comprehensive R Archive Network*)
+-   GitHub (Repositório de códigos)
+
+```{r eval=FALSE}
+# numero de pacotes no cran
+nrow(available.packages())
+```
+
+<center><img src="img/r_number_packages.png" style="width:35%"/></center>
+
+::: footer
+[CRAN](https://cran.r-project.org/), [Scraping CRAN with rvest](https://www.r-bloggers.com/2017/03/scraping-cran-with-rvest/)
+:::
+
+## Pacotes {.smaller}
+
+**Instalação de pacotes**
+
+1.  Download do pacote para o computador (como instalar um software/APP)
+2.  Precisa estar conectado à internet
+3.  O nome do pacote precisa estar entre aspas
+4.  Função (CRAN): `install.packages("pacote")`
+
+**Instalar o pacote vegan**
+
+```{r eval=FALSE}
+# instalar pacotes
+install.packages("vegan")
+```
+
+**Verificar pacotes instalados**
+
+```{r eval=FALSE}
+# verificar pacotes instalados
+library()
+```
+
+## Pacotes {.smaller}
+
+**Carregamento de pacotes**
+
+1.  Carregar o pacote para o R (como abrir software/APP)
+2.  Carrega-se toda vez que se abre o R
+3.  Não precisa estar conectado à internet
+4.  O nome do pacote não precisa estar entre aspas
+5.  Funções: `library(pacote)` ou `require(pacote)`
+
+**Carregar o pacote vegan**
+
+```{r}
+# carregar pacotes
+library(vegan)
+```
+
+**Verificar pacotes carregados**
+
+```{r}
+# verificar pacotes carregados
+search()
+```
+
+# Principais erros
+
+# Se seu script rodou sem erros, tem algo errado...
+
+# 
+
+<center><img src="img/general_make_impossible.png" style="width:60%"/></center>
+
+# 
+
+<center><img src="img/gif_bugcat_error.gif" style="width:70%"/></center>
+
+# 
+
+<center><img src="img/gif_bugcat_sad.gif" style="width:70%"/></center>
+
+# 
+
+Help me help you: um bestiário para entender erros e pedir ajuda no R
+
+<center><img src="img/debugging.png" style="width:40%"/></center>
+
+::: footer
+[Help me help you: um bestiário para entender erros e pedir ajuda no R](https://anotherecoblog.wordpress.com/2020/08/26/help-me-help-you-um-bestiario-para-entender-erros-e-pedir-ajuda-no-r/)
+:::
+
+## Principais erros
+
+**1. Esquecer de completar um código (+)**
+
+Parênteses
+
+```{r error=TRUE}
+sum(1, 2
+    +
+```
+
+Aspas
+
+```{r error=TRUE}
+"string
++
+```
+
+## Principais erros
+
+**2. Esquecer da vírgula**
+
+```{r error=TRUE}
+sum(1 2)
+```
+
+<br>
+
+**3. Chamar um objeto errado**
+
+```{r error=TRUE}
+obj <- 10
+OBJ
+```
+
+## Principais erros
+
+**4. Esquecer de carregar um pacote**
+
+```{r echo=FALSE}
+detach("package:vegan", unload = TRUE)
+```
+
+```{r error=TRUE}
+# carregar dados
+data(dune)
+
+# funcao do pacote vegan
+decostand(dune, "hell")
+```
+
+## Principais erros
+
+**4. Esquecer de carregar um pacote**
+
+```{r}
+# carregar o pacote
+library(vegan)
+
+## carregar dados
+data(dune)
+
+## funcao do pacote vegan
+decostand(dune, "hell")
+```
+
+## Principais erros
+
+**5. Usar o nome da função de forma errônea**
+
+```{r error=TRUE}
+colsums(dune)
+```
+
+<br>
+
+```{r error=TRUE}
+colSums(dune)
+```
+
+# Dúvidas?
+
+# 2. Análise exploratória de dados (AED)
+
+## Dados
+
+|    id     |       especie       | peso  | comp_corpo | comp_asa | ... |
+|:---------:|:-------------------:|:-----:|:----------:|:--------:|:---:|
+| LECAVE035 | Columbina talpacoti | 40.64 |   158.5    |  90.51   | ... |
+| LECAVE036 | Columbina talpacoti | 41.05 |   149.73   |  89.42   | ... |
+| LECAVE037 | Columbina talpacoti | 43.96 |   147.62   |  89.32   | ... |
+| LECAVE038 | Columbina talpacoti | 48.01 |   153.44   |  90.57   | ... |
+|    ...    |         ...         |  ...  |    ...     |   ...    | ... |
+
+## Variáveis
+
+Cada coluna dos nossos dados é uma **variável** (valores variam)
+
+```{r echo=FALSE}
+tibble::glimpse(readxl::read_excel("../Eco_quant_dados_2023.xlsx", 
+                                   col_types = c("text", "text", rep("numeric", 8))))
+```
+
+## Medidas-resumo
+
+**Medidas de posição**
+
+<br>
+
+-   **Moda**: valor mais frequente das observações
+
+-   **Mediana**: valor que divide as observações ordenadas em duas partes iguais
+
+-   **Média aritmética**: soma das observações dividida pelo número de observações
+
+-   **Outras médias**: ponderada, geométrica e harmônica
+
+## Medidas-resumo
+
+**Medidas de dispersão**
+
+<br>
+
+-   **Variância**: medida de quantas observações diferem do valor central (média)
+
+-   **Desvio padrão**: raiz quadrada da variância (mantêm a mesma unidade de medida)
+
+-   **Erro padrão**: variação da média amostral em relação à média populacional (confiabilidade da média amostral)
+
+## Tabelas {.smaller}
+
+**Tabelas de frequência**
+
+-   **Dados brutos**: conjunto dos valores numéricos coletados na pesquisa
+
+-   **Classes**: intervalo de valores contínuos (0 \|--- 1)
+
+-   **Frequência absoluta (fi)**: número de vezes que uma observação aparece ou pertencente a um intervalo ou classe
+
+-   **Frequência total**: soma de todas as frequências absolutas (fi)
+
+-   **Frequência relativa (fri)**: valor da razão de cada frequência absoluta (fi) com a frequência total (somatório de fi)
+
+-   **Frequência acumulada (Fi)**: obtida somando (acumulando) os valores da frequência absoluta (fi)
+
+-   **Frequência relativa acumulada (Fri)**: obtida somando (acumulando) os valores da frequência relativa (fri)
+
+## Tabelas
+
+**Tabelas de frequência**
+
+| Classes | Freq. absoluta (fi) | Freq. relativa (fri) | Freq. acumulada (Fi) | Freq. relativa acumulada (Fri) |
+|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|
+| 0\|---1 |          4          |         0.13         |          4           |              0.13              |
+| 1\|---2 |          8          |         0.26         |          12          |              0.39              |
+| 2\|---3 |         12          |         0.39         |          24          |              0.77              |
+| 3\|---4 |          7          |         0.23         |          31          |              1.00              |
+|  Total  |         31          |         1.00         |                      |                                |
+
+## Gráficos
+
+-   Melhor forma de apresentar, sintetizar, discutir e interpretar seus dados
+
+-   Necessário em quase todas as análises estatísticas
+
+-   Necessário em quase todas as publicações, trabalhos de consultoria, TCC, dissertação, tese, etc.
+
+-   Existem vários tipos de gráficos para representar os padrões em seus dados para diferentes tipos de finalidades
+
+-   De forma simplificada, os gráficos são representações dos nossos dados tabulares
+
+## Como mentir com estatística?
+
+![](img/cover_mentir_estatistica.jpg){.absolute width="270" height="400" right="850" top="200"} ![](img/como_mentir_est.png){.absolute width="900" height="450" right="-80" top="150"}
+
+::: footer
+[Heff (2016)](https://www.intrinseca.com.br/livro/624/), [Como MENTIR com ESTATÍSTICA](https://youtu.be/r6d-RBDlc5I)
+:::
+
+## Elementos de um gráfico
+
+Representações das colunas (eixos) e linhas (elementos)
+
+<center><img src="img/plot_data_table_scatterplot.png" style="width:90%"/></center>
+
+## Tipos de variáveis
+
+![](img/plot_variables.png){.absolute width="500" height="250" right="300" top="100"}
+
+![](img/nominal_ordinal_binary.png){.absolute width="500" height="350" right="550" top="350"}
+
+![](img/continuous_discrete_inv.png){.absolute width="500" height="350" right="50" top="350"}
+
+::: footer
+[Matthiopoulos (2011)](http://greenmaths.st-andrews.ac.uk/), [\@allison_horst](https://twitter.com/allison_horst)
+:::
+
+## Tipos de variáveis e tipos gráficos
+
+<br>
+
+<center><img src="img/ggplot_data_from_viz.png" style="width:85%"/></center>
+
+::: footer
+[from Data to Viz](https://www.data-to-viz.com/)
+:::
+
+## Tipos de variáveis e tipos gráficos
+
+<center><img src="img/r_charts_suggests.png" style="width:100%"/></center>
+
+## R CHARTS
+
+<center><img src="img/rcharts-featured.png" style="width:100%"/></center>
+
+::: footer
+[R CHARTS](https://r-charts.com/)
+:::
+
+## Histograma ou densidade
+
+-   Representa dados de uma coluna
+
+-   Dados do tipo discreto ou contínuo
+
+-   Distribuição de frequência ou densidade
+
+![](img/plot_histogram.png){.absolute width="350" height="350" right="550" top="310"}
+
+![](img/plot_density.png){.absolute width="350" height="350" right="100" top="310"}
+
+::: footer
+[histogram](https://www.data-to-viz.com/graph/histogram.html), [density](https://www.data-to-viz.com/graph/density.html)
+:::
+
+## Histograma
+
+<br>
+
+<center><img src="img/hist_fig1.gif" style="width:80%"/></center>
+
+. . .
+
+<br>
+
+<center><img src="img/hist_fig2.gif" style="width:80%"/></center>
+
+::: footer
+[Intro to Histograms](https://plotly.com/chart-studio-help/histogram/)
+:::
+
+## Histograma
+
+<center><img src="img/hist_fig3.gif" style="width:55%"/></center>
+
+::: footer
+[Intro to Histograms](https://plotly.com/chart-studio-help/histogram/)
+:::
+
+## Densidade
+
+<br><br>
+
+<center><img src="img/hist_fig5.jpg" style="width:100%"/></center>
+
+::: footer
+[Intro to Histograms](https://plotly.com/chart-studio-help/histogram/)
+:::
+
+## Densidade
+
+![](img/hist_fig6.gif){.absolute width="550" height="350" right="550" top="250"}
+
+. . .
+
+![](img/hist_fig7.gif){.absolute width="560" height="340" right="-50" top="265"}
+
+::: footer
+[Intro to Histograms](https://plotly.com/chart-studio-help/histogram/)
+:::
+
+## Gráfico de caixas (*Box plot*)
+
+-   Representa dados de duas colunas
+
+-   Dados do tipo categóricos: X = categórico e Y = contínuo
+
+-   Resume informações de medidas contínuas para dois ou mais fatores categóricos
+
+![](img/plot_boxplot.png){.absolute width="350" height="350" right="360" top="330"}
+
+::: footer
+[boxplot](https://www.data-to-viz.com/caveat/boxplot.html)
+:::
+
+## Gráfico de caixas (*Box plot*)
+
+-   Intervalo inter-quartil (*interquartile range* - IQR)
+
+-   Limite inferior e limite superipor (1.5 x IQR)
+
+-   Valores exteriores (*outliers*)
+
+![](img/plot_boxplot1.png){.absolute width="500" height="280" right="520" top="350"} ![](img/plot_boxplot2.png){.absolute width="430" height="430" right="50" top="250"}
+
+::: footer
+[Understanding Boxplots](https://www.kdnuggets.com/2019/11/understanding-boxplots.html)
+:::
+
+## Outlier
+
+Observação coletado de forma errônea ou devido à arredondamentos
+
+<center><img src="img/outlier.png" style="width:85%"/></center>
+
+## Gráfico de caixas (*Box plot*)
+
+<br>
+
+<center><img src="img/boxplotfig1.gif" style="width:80%"/></center>
+
+. . .
+
+<center><img src="img/boxplotfig2.gif" style="width:80%"/></center>
+
+::: footer
+[Intro to Box Plots](https://plotly.com/chart-studio-help/what-is-a-box-plot/)
+:::
+
+## Gráfico de caixas (*Box plot*)
+
+<br>
+
+<center><img src="img/boxplotfig3.gif" style="width:80%"/></center>
+
+. . .
+
+<center><img src="img/boxplotfig4.gif" style="width:80%"/></center>
+
+::: footer
+[Intro to Box Plots](https://plotly.com/chart-studio-help/what-is-a-box-plot/)
+:::
+
+## Gráfico de caixas (*Box plot*)
+
+<br>
+
+<center><img src="img/boxplotfig5.gif" style="width:80%"/></center>
+
+. . .
+
+![](img/boxplotfig7.gif){.absolute width="1000" height="350" right="-190" top="340"}
+
+::: footer
+[Intro to Box Plots](https://plotly.com/chart-studio-help/what-is-a-box-plot/)
+:::
+
+## Gráfico de caixas (*Box plot*)
+
+<br>
+
+<center><img src="img/boxplotfig8.gif" style="width:60%"/></center>
+
+::: footer
+[Intro to Box Plots](https://plotly.com/chart-studio-help/what-is-a-box-plot/)
+:::
+
+## Gráfico de caixas (*Box plot*)
+
+<br>
+
+<center><img src="img/boxplotfig9.gif" style="width:80%"/></center>
+
+::: footer
+[Intro to Box Plots](https://plotly.com/chart-studio-help/what-is-a-box-plot/)
+:::
+
+# 3. Análise de dados multivariados
+
+## Dados em matrizes
+
+<br>
+
+<center><img src="img/dados_matriz.png" style="width:80%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Objetos e descritores {.smaller}
+
+-   **Objetos (1)**: linhas - representam os locais ou indivíduos amostrados
+-   **Descritores (2)**: colunas - representam as variáveis mensuradas ou contagens
+
+<center><img src="img/dados_matriz_linhas_colunas.png" style="width:75%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Análises no modo R e Q {.smaller}
+
+-   **Modo R**: análise da relação dos descritores (correlação e covariância)
+-   **Modo Q**: análise da relação dos objetos (distância ou associação)
+
+<center><img src="img/dados_matriz_modo_rq.png" style="width:75%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Tipos de análises multivariadas {.smaller}
+
+::: columns
+::: {.column width="50%"}
+-   **Agrupamento**: agrupar objetos mais semelhantes entre si
+
+<center><img src="img/dados_agrupamento.png" style="width:100%"/></center>
+:::
+
+::: {.column width="50%"}
+-   **Ordenação**: ordenar objetos num espaço com menos dimensões
+
+    <center><img src="img/dados_ordenacao.png" style="width:100%"/></center>
+:::
+:::
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+# Mas antes, vamos entender o que medimos e ajustes prévios dos dados
+
+## Escala de medidas {.smaller}
+
+<center><img src="img/dados_medidas.png" style="width:70%"/></center>
+
+-   **Nominal**: nomes sem ordem (1. pelágico ou 2. litoral)
+-   **Ordinal**: nomes com ordem (1. argila, 2. silte, 3. areia, 4. cascalho ou 5. pedra)
+-   **Razão**: medidas multiplicativas (biomassa, concentração, comprimento)
+-   **Intervalo**: medidas adicionais (tempo, temperatura)
+-   **Contagem**: enumeração (abundância)
+-   **Composição**: proporções que somam um (areia, silte e argila)
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Escala de medidas (unidades) {.smaller}
+
+-   Variáveis ambientais geralmente são medidas em diferentes unidades
+
+-   Essa diferença deve ser considera quando realizamos análises multivariadas
+
+-   Ex.: temperatura (ºC), distância da margem (m), área (m²), volume (m³)
+
+<center><img src="img/dados_medidas_unidades.png" style="width:45%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Transformação (*Transformation*)
+
+Muda a escala de variação ou natureza da variável
+
+-   **Logaritmo**: muda a escala dos valores
+
+$$x' = log_{10}(100) = 2$$
+
+<center><img src="img/dados_transformacao_log.png" style="width:60%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Transformação (*Transformation*)
+
+Muda a escala de variação ou natureza da variável
+
+-   **Box-Cox**: transformações usando potências (λ)
+
+$$x' = \frac{1}{\lambda}(x^\lambda - 1)$$
+
+<center><img src="img/dados_transformacao_boxcox.png" style="width:37%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Transformação (*Transformation*)
+
+Muda a escala de variação ou natureza da variável
+
+-   **Dummy**: variáveis categóricas são codificadas como *variáveis dummy* (0 e 1)
+
+|    classe    | dummy1 | dummy2 |
+|:------------:|:------:|:------:|
+|   floresta   |   0    |   0    |
+| silvicultura |   1    |   0    |
+|   pastagem   |   0    |   1    |
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Transformação (*Transformation*)
+
+Muda a escala de variação ou natureza da variável
+
+-   **Dummy**: variáveis categóricas são codificadas como *variáveis dummy* (0 e 1)
+
+|    classe    | dummy1 | dummy2 | dummy3 |
+|:------------:|:------:|:------:|:------:|
+|   floresta   |   0    |   0    |   0    |
+| silvicultura |   1    |   0    |   0    |
+|   pastagem   |   0    |   1    |   0    |
+|     cana     |   0    |   0    |   1    |
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Transformação (*Transformation*)
+
+Muda a escala de variação ou natureza da variável
+
+-   **Fuzzy**: variáveis contínuas são codificadas como *variáveis fuzzy* ("baixo", "médio" e "alto)
+
+<center><img src="img/dados_transformacao_fuzzy.png" style="width:100%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Padronização (*Standardization*)
+
+Centralização das variáveis para terem a mesma variação
+
+<center><img src="img/dados_medidas_padronizacao.png" style="width:90%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Padronização (*Standardization*)
+
+**Z-Score**: média = 0 e desvio padrão = 1
+
+<center><img src="img/dados_medidas_padronizacao_z.png" style="width:55%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Padronização (*Standardization*)
+
+-   valor padronizado = (valor original -- media) / desvio padrao
+
+::: columns
+::: {.column width="50%"}
+<center><img src="img/dados_matriz_variaveis_continuas.png" style="width:100%"/></center>
+
+<center><img src="img/dados_matriz_variaveis_continuas_x_sd.png" style="width:100%"/></center>
+:::
+
+::: {.column width="50%"}
+<center><img src="img/dados_matriz_variaveis_continuas_z.png" style="width:90%"/></center>
+:::
+:::
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+# Com os dados ajustados, vamos calcular medidas entre os objetos
+
+## Medidas entre objetos {.smaller}
+
+Medidas ou índices podem ser:
+
+1.  **Medidas de distância**: aplicadas a dados quantitativos e não possuem limites superiores (dependem da unidade de medida)
+
+-   Valores de distância (d): 0 (idênticos) a ∞ (diferentes)
+
+. . .
+
+2.  **Medidas de associação**: aplicadas a diversos tipos de dados (qualitativos ou quantitativos) e possuem limite superior (similaridade é máxima (S=1) quando dois objetos são idênticos)
+
+-   Valores de similaridade (S): 0 (diferentes) a 1 (idênticos)
+
+-   Valores de dissimilaridade (D): 0 (idênticos) a 1 (diferentes)
+
+$$D = 1 - S$$
+
+::: footer
+[Legendre & Legendre (2012)](http://www.numericalecology.com/indexen.html)
+:::
+
+## Medidas de distância
+
+**Distância Euclidiana** (Dados ambientais)
+
+::: columns
+::: {.column width="35%"}
+<center><img src="img/pitagoras.png" style="width:100%"/></center>
+:::
+
+::: {.column width="65%"}
+<center><img src="img/teorema_pitagoras.jpg" style="width:60%"/></center>
+:::
+:::
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Medidas de distância
+
+**Distância Euclidiana** (Dados ambientais)
+
+::: columns
+::: {.column width="35%"}
+<center><img src="img/pitagoras.png" style="width:100%"/></center>
+:::
+
+::: {.column width="65%"}
+<center><img src="img/dist_euc_2d.png" style="width:100%"/></center>
+:::
+:::
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Medidas de distância
+
+**Distância Euclidiana** (Dados ambientais)
+
+::: columns
+::: {.column width="35%"}
+<center><img src="img/pitagoras.png" style="width:100%"/></center>
+:::
+
+::: {.column width="65%"}
+<center><img src="img/dist_euc_3d.png" style="width:80%"/></center>
+:::
+:::
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Medidas de distância
+
+**Distância Euclidiana** (Dados ambientais)
+
+$$d_{x,y} = \sqrt{(x_1 - y_1)^2 + (x_2 - y_2)^2}$$ $$d_{x,y} = \sqrt{(x_1 - y_1)^2 + (x_2 - y_2)^2 + (x_3 - y_3)^2}$$ $$d_{x,y} = \sqrt{\sum_{j=1}^{J}(x_j - y_j)^2}$$
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Medidas de distância
+
+**Distância Euclidiana** (Dados ambientais)
+
+-   Sem padronização
+
+$$d_{s29,s30} = \sqrt{(51 - 90)^2 + (6.0 - 1.9)^2 + (3.0 - 2.9)^2} = 48.17$$
+
+-   Com padronização
+
+$$d_{s29,s30} = \sqrt{(-1.5 - 1.6)^2 + (.7 - (-1.2))^2 + (-.2 - (-.6))^2} = 3.6$$
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+# Com as distâncias entre objetos calculadas, vamos relacionar esses objetos
+
+## Medidas de distância
+
+**Matriz de distântica Euclidiana**
+
+<center><img src="img/matriz_dist.png" style="width:75%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Medidas de associação
+
+**Dissimilaridade de Bray-Curtis** (Abundância de espécies)
+
+<center><img src="img/diss_bray_curtis.png" style="width:75%"/></center>
+
+$$b_{i,i'} = \frac{\sum_{j = 1}^{J}{|n_{ij} - n_{i'j}|}}{n_{i+} + n_{i'+}}$$ $$b_{s29,s30} = \frac{|11 - 24| + |0 - 37| + |7 - 5| + |8 - 18| + |0 - 1|}{26 + 85} = 0.568$$
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Medidas de associação
+
+**Matriz de dissimilaridade de Bray-Curtis**
+
+<center><img src="img/matriz_dist_bray.png" style="width:75%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Medidas de associação
+
+**Dissimilaridade de Jaccard** (Indidência de espécies)
+
+<br>
+
+<center><img src="img/matriz_incidencia.png" style="width:100%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Medidas de associação {.smaller}
+
+**Dissimilaridade de Jaccard** (Indidência de espécies)
+
+<center><img src="img/matriz_22.png" style="width:50%"/></center>
+
+$$j_{ii'} = 1 - \frac{a}{a + b + c}$$ Onde:
+
+a = número de espécies compartilhadas
+
+b = número de espécies exclusivas do local 1
+
+c = número de espécies exclusivas do local 2
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Medidas de associação
+
+**Dissimilaridade de Jaccard** (Indidência de espécies)
+
+<center><img src="img/matriz_incidencia_calculo.png" style="width:50%"/></center>
+
+$$j_{ii'} = 1 - \frac{a}{a + b + c}$$ $$j_{AB} = 1 - \frac{4}{4 + 3 + 1} = 0.5$$
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Medidas de associação
+
+**Matriz de dissimilaridade de Jaccard**
+
+<br>
+
+<center><img src="img/cluster_01.png" style="width:100%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Tipos de análises multivariadas {.smaller}
+
+::: columns
+::: {.column width="50%"}
+-   **Agrupamento**: agrupar objetos mais semelhantes entre si
+
+<center><img src="img/dados_agrupamento.png" style="width:100%"/></center>
+:::
+
+::: {.column width="50%"}
+-   **Ordenação**: ordenar objetos num espaço com menos dimensões
+
+    <center><img src="img/dados_ordenacao.png" style="width:100%"/></center>
+:::
+:::
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Tipos de análises de agrupamento {.smaller}
+
+::: columns
+::: {.column width="50%"}
+-   **Hierárquico**: objetos de um grupo se tornam elementos do grupo superior
+
+<center><img src="img/dados_agrupamento.png" style="width:100%"/></center>
+:::
+
+::: {.column width="50%"}
+-   **Não-hierárquico**: define-se k grupos e aloca-se os objetos aos grupos
+
+    <center><img src="img/kmeans3.gif" style="width:150%"/></center>
+:::
+:::
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Análises de agrupamento (*Cluster*)
+
+**1. Pares mais parecidos (menor dissimilaridade) = (B,F)**
+
+::: columns
+::: {.column width="65%"}
+<br><br>
+
+<center><img src="img/cluster_02.png" style="width:100%"/></center>
+:::
+
+::: {.column width="35%"}
+<br><br>
+
+<center><img src="img/cluster_03.png" style="width:100%"/></center>
+:::
+:::
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Análises de agrupamento (*Cluster*)
+
+**2. Recalcular a distância do grupo (B,F) para os demais**
+
+<br>
+
+<center><img src="img/cluster_04.png" style="width:100%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Análises de agrupamento (*Cluster*)
+
+**3. Pares mais parecidos (menor dissimilaridade) = (A,E)**
+
+::: columns
+::: {.column width="65%"}
+<br><br>
+
+<center><img src="img/cluster_05.png" style="width:100%"/></center>
+:::
+
+::: {.column width="35%"}
+<br><br>
+
+<center><img src="img/cluster_06.png" style="width:100%"/></center>
+:::
+:::
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Análises de agrupamento (*Cluster*)
+
+**4. Recalcular a distância do grupo (A,E) para os demais**
+
+<br>
+
+<center><img src="img/cluster_07.png" style="width:90%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Análises de agrupamento (*Cluster*)
+
+**5. Pares mais parecidos (menor dissimilaridade) = (C,G)**
+
+::: columns
+::: {.column width="65%"}
+<br><br>
+
+<center><img src="img/cluster_08.png" style="width:100%"/></center>
+:::
+
+::: {.column width="35%"}
+<br><br>
+
+<center><img src="img/cluster_09.png" style="width:100%"/></center>
+:::
+:::
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Análises de agrupamento (*Cluster*)
+
+**6. Recalcular a distância do grupo (C,G) para os demais**
+
+<br>
+
+<center><img src="img/cluster_10.png" style="width:80%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Análises de agrupamento (*Cluster*)
+
+**7. Pares mais parecidos (menor dissimilaridade) = (A,E),(C,G)**
+
+::: columns
+::: {.column width="65%"}
+<br><br>
+
+<center><img src="img/cluster_11.png" style="width:100%"/></center>
+:::
+
+::: {.column width="35%"}
+<br><br>
+
+<center><img src="img/cluster_12.png" style="width:100%"/></center>
+:::
+:::
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Análises de agrupamento (*Cluster*)
+
+**8. Recalcular a distância do grupo (A,E,C,G) para os demais**
+
+<br>
+
+<center><img src="img/cluster_13.png" style="width:80%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Análises de agrupamento (*Cluster*)
+
+**9. Pares mais parecidos (menor dissim.) = (A,E,C,G),(B,F)**
+
+::: columns
+::: {.column width="65%"}
+<br><br>
+
+<center><img src="img/cluster_14.png" style="width:100%"/></center>
+:::
+
+::: {.column width="35%"}
+<br><br>
+
+<center><img src="img/cluster_15.png" style="width:100%"/></center>
+:::
+:::
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Análises de agrupamento (*Cluster*)
+
+**10. Recalcular a distância do grupo (A,E,C,G,B,F) para o D**
+
+<br>
+
+<center><img src="img/cluster_16.png" style="width:70%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Análises de agrupamento (*Cluster*)
+
+**11. Pares mais parecidos (menor dissim.) = (A,E,C,G,B,F,D)**
+
+::: columns
+::: {.column width="65%"}
+<br><br>
+
+<center><img src="img/cluster_17.png" style="width:100%"/></center>
+:::
+
+::: {.column width="35%"}
+<br><br>
+
+<center><img src="img/cluster_18.png" style="width:100%"/></center>
+:::
+:::
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+# E como saber se esse agrupamento ficou bom?
+
+## Análises de agrupamento (*Cluster*)
+
+**Matriz cofenética**
+
+Distâncias recuperadas do agrupamento hierárquico
+
+```{r echo=FALSE}
+da_matriz_incidencia <- read.csv("../dados_livro_incidencia.csv")
+da_matriz_incidencia_locais <- da_matriz_incidencia[, 1]
+da_matriz_incidencia_especies <- da_matriz_incidencia[, -1]
+rownames(da_matriz_incidencia_especies) <- da_matriz_incidencia_locais
+dist_especies_incidencia <- vegan::vegdist(da_matriz_incidencia_especies, method = "jaccard")
+cluster_especies_incidencia_complete <- stats::hclust(dist_especies_incidencia, method = "complete")
+cluster_especies_incidencia_complete_coph <- stats::cophenetic(cluster_especies_incidencia_complete)
+cluster_especies_incidencia_complete_coph
+```
+
+<center><img src="img/cluster_19.png" style="width:42%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Análises de agrupamento (*Cluster*)
+
+**Índice de correlação cofenética (> 0.7)**
+
+```{r}
+# matriz de distância 
+```
+
+```{r echo=FALSE}
+da_matriz_incidencia <- read.csv("../dados_livro_incidencia.csv")
+da_matriz_incidencia_locais <- da_matriz_incidencia[, 1]
+da_matriz_incidencia_especies <- da_matriz_incidencia[, -1]
+rownames(da_matriz_incidencia_especies) <- da_matriz_incidencia_locais
+dist_especies_incidencia <- vegan::vegdist(da_matriz_incidencia_especies, method = "jaccard")
+dist_especies_incidencia
+```
+
+```{r}
+# matriz cofenetica
+```
+
+```{r echo=FALSE}
+da_matriz_incidencia <- read.csv("../dados_livro_incidencia.csv")
+da_matriz_incidencia_locais <- da_matriz_incidencia[, 1]
+da_matriz_incidencia_especies <- da_matriz_incidencia[, -1]
+rownames(da_matriz_incidencia_especies) <- da_matriz_incidencia_locais
+dist_especies_incidencia <- vegan::vegdist(da_matriz_incidencia_especies, method = "jaccard")
+cluster_especies_incidencia_complete <- stats::hclust(dist_especies_incidencia, method = "complete")
+cluster_especies_incidencia_complete_coph <- stats::cophenetic(cluster_especies_incidencia_complete)
+cluster_especies_incidencia_complete_coph
+```
+
+```{r}
+# indice de correlacao cofenetica
+```
+
+```{r echo=FALSE}
+da_matriz_incidencia <- read.csv("../dados_livro_incidencia.csv")
+da_matriz_incidencia_locais <- da_matriz_incidencia[, 1]
+da_matriz_incidencia_especies <- da_matriz_incidencia[, -1]
+rownames(da_matriz_incidencia_especies) <- da_matriz_incidencia_locais
+dist_especies_incidencia <- vegan::vegdist(da_matriz_incidencia_especies, method = "jaccard")
+cluster_especies_incidencia_complete <- stats::hclust(dist_especies_incidencia, method = "complete")
+cluster_especies_incidencia_complete_coph <- stats::cophenetic(cluster_especies_incidencia_complete)
+cor(dist_especies_incidencia, cluster_especies_incidencia_complete_coph)
+```
+
+## Análises de agrupamento (*Cluster*)
+
+**Dendrograma**
+
+<center><img src="img/dendograma.png" style="width:90%"/></center>
+
+# Mas existe mais de uma forma de ligar esse objetos
+
+## Análises de agrupamento (*Cluster*)
+
+**Métodos de ligação**
+
+-   Máximo (*complete*), mínimo (*single*) e média (*average*)
+
+![](img/cluster_19.png){.absolute width="400" height="300" right="700" top="300"} ![](img/cluster_20.png){.absolute width="400" height="300" right="300" top="300"} ![](img/cluster_21.png){.absolute width="400" height="300" right="-100" top="300"}
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+## Análises de agrupamento (*Cluster*)
+
+**Escolha do número de grupos**
+
+<center><img src="img/cluster_22.png" style="width:75%"/></center>
+
+::: footer
+[Greenacre & Primicerio (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+:::
+
+# Dúvidas?
+
+# Aplicações
+
+## Aplicações {.smaller}
+
+-   Agrupamento de locais em termos de composição de espécies ou condições ambientais
+
+-   Filogenia e sistemática
+
+-   Diversidade filogenética e funcional
+
+<center><img src="img/agrupamento_aplicacao.jpg" style="width:70%"/></center>
+
+::: footer
+[Da Silva et al. (2022)](https://analises-ecologicas.com/)
+:::
+
+# Resumindo
+
+## Resumindo {.smaller}
+
+-   Linguagem R
+
+-   Análise Exploratória de Dados (AED): medidas-resumo, tabelas e gráficos
+
+-   Análise de dados multivariados
+
+-   Dados em matrizes, objetos e descritores, análises modo R (descritores) e Q (objetos)
+
+-   Dois tipos de análises: agrupamento e ordenação
+
+-   Escala de medida, transformação, padronização
+
+-   Medidas de distância (0 a ∞) e associação (S=1 e D=0)
+
+-   Matrizes de distância e similaridade/dissimilaridade
+
+-   Análise de agrupamento e dendrograma
+
+-   Métodos de ligação: máximo (*complete*), mínimo (*single*) e média (*average*)
+
+-   Escolha do número de grupos
+
+-   Aplicações
+
+# Material de estudo
+
+## Material de estudo
+
+-   [Análises Ecológicas no R (2022)](https://analises-ecologicas.com/)
+
+-   [Ecologia numérica (2012)](https://www.travessa.com.br/ecologia-numerica-uma-introducao-a-analise-multivariada-de-dados-ecologicos-2-ed-2012/artigo/c19813c8-0c1d-4d56-8f63-86a90a90c02c)
+
+-   [Princípios de Ecologia Numérica: com exemplos em R (2019)](https://github.com/maurobio/econum)
+
+-   [Multivariate Analysis of Ecological Data (2013)](https://www.fbbva.es/microsite/multivariate-statistics/)
+
+-   [Numerical Ecology (2012)](http://www.numericalecology.com/indexen.html)
+
+-   [Numerical Ecology with R (2018)](http://www.numericalecology.com/numecolR/)
+
+-   [Multivariate Analysis of Ecological Data with ade4 (2018)](https://lbbe.univ-lyon1.fr/en/annuaires-des-membres/thioulouse-jean)
+
+## Muito obrigado!
+
+::: columns
+::: {.column width="50%"}
+Agradecimentos:
+
+-   [Prof. Tadeu Siqueira](https://tsiqueiralab.weebly.com/)
+-   [Prof. Miltinho](https://leec.eco.br/)
+-   [Fapesp #2022/01899-6](https://bv.fapesp.br/pt/bolsas/203713/estrutura-da-paisagem-como-preditor-da-diversidade-taxonomica-e-funcional-de-anfibios-na-mata-atlant/)
+
+<center><img src="img/fapesp.png" style="width:70%"/></center>
+:::
+
+::: {.column width="50%"}
+Contato:
+
+<center>
+
+[`r icons::icon_style(icons::fontawesome("link"), fill = "#2268bc")`](https://mauriciovancine.github.io/) [`r icons::icon_style(icons::fontawesome("envelope", style = "solid"), fill = "#2268bc")`](mailto:mauricio.vancine@gmail.com) [`r icons::icon_style(icons::fontawesome("twitter"), fill = "#2268bc")`](https://twitter.com/mauriciovancine) [`r icons::icon_style(icons::fontawesome("github"), fill = "#2268bc")`](https://github.com/mauriciovancine)
+
+<img src="img/gif_frogs.gif" style="width:80%"/>
+
+</center>
+:::
+:::
+
+::: footer
+Slides por [Maurício Vancine](https://mauriciovancine.github.io/), feitos com [Quarto](https://quarto.org/). Código disponível no [GitHub](https://github.com/mauriciovancine/workshop-r-introduction/blob/master/01_slides/slides.qmd).
+:::

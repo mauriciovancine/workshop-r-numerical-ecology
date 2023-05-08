@@ -1,0 +1,3253 @@
+<!DOCTYPE html>
+<html lang="pt"><head>
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/tabby.min.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.3.340">
+
+  <meta name="author" content="Maurício Vancine">
+  <title>Introdução à Ecologia Numérica no R</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section class="quarto-title-block center">
+  <h1 class="title">Introdução à Ecologia Numérica no R</h1>
+  <p class="subtitle">Análise de dados multivariados <br> Agrupamento (cluster)</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+<a href="https://mauriciovancine.github.io/">Maurício Vancine</a> 
+</div>
+</div>
+</div>
+
+  <p class="date">9 de maio de 2023</p>
+</section>
+<section class="slide level2">
+<h2>Maurício Vancine</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<center>
+<br> <img data-src="img/avatar.png"> <a href="https://mauriciovancine.github.io/"><svg viewbox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;fill:#2268bc;" xmlns="http://www.w3.org/2000/svg"> <path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"></path></svg></a> <a href="mailto:mauricio.vancine@gmail.com"><svg viewbox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;fill:#2268bc;" xmlns="http://www.w3.org/2000/svg"> <path d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path></svg></a> <a href="https://mauriciovancine.github.io/cv/cv-mauricio-vancine-pt-academic-complete.html"><svg viewbox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;fill:#2268bc;" xmlns="http://www.w3.org/2000/svg"> <g groupmode="layer" id="layer6" label="icon"> <path style="stroke-width:0.07717" d="m 249.17973,328.32402 c -9.78758,15.38441 -19.17851,30.4337 -40.22128,45.05521 -11.25687,7.89055 -37.16464,23.30604 -73.9908,23.30604 -70.258325,0 -126.9676516,-51.07979 -126.9676516,-140.88446 0,-78.48565 53.3447156,-140.48607 128.4662816,-140.48607 30.4337,0 57.47396,10.52167 77.38654,26.30447 18.41392,14.65033 27.03796,29.30348 34.56291,42.45573 l -52.58013,26.27338 c -3.76134,-8.62631 -8.28954,-17.64933 -19.91259,-27.40585 -12.78437,-10.15549 -25.53991,-13.15224 -36.45998,-13.15224 -42.821335,0 -65.364452,39.82459 -65.364452,84.14459 0,58.23852 29.700162,87.14305 65.364452,87.14305 34.5629,0 48.47976,-24.0418 57.47396,-39.42563 l 52.24332,26.67235 z M 433.37382,123.57317 H 504 L 411.96314,388.7947 H 344.36647 L 253.46212,123.57317 h 70.62446 l 54.84337,188.60017 z" id="path2"></path> </g></svg></a> <a href="https://twitter.com/mauriciovancine"><svg viewbox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;fill:#2268bc;" xmlns="http://www.w3.org/2000/svg"> <path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"></path></svg></a> <a href="https://github.com/mauriciovancine"><svg viewbox="0 0 496 512" style="height:1em;position:relative;display:inline-block;top:.1em;fill:#2268bc;" xmlns="http://www.w3.org/2000/svg"> <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg></a> <a href="https://orcid.org/0000-0001-9650-7575"><svg viewbox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;fill:#2268bc;" xmlns="http://www.w3.org/2000/svg"> <g label="icon" id="layer6" groupmode="layer"> <path id="path2" d="m 336.6206,194.53756 c -7.12991,-3.32734 -13.8671,-5.55949 -20.25334,-6.61343 -6.36534,-1.09517 -16.57451,-1.61223 -30.71059,-1.61223 h -36.70409 v 152.74712 h 37.63425 c 14.6735,0 26.08126,-1.01267 34.22385,-3.01709 8.14259,-2.00442 14.92159,-4.52592 20.35674,-7.62608 5.43519,-3.07925 10.416,-6.8615 14.94192,-11.38742 14.4876,-14.71475 21.74129,-33.27334 21.74129,-55.7176 0,-22.05151 -7.44016,-40.05177 -22.34085,-53.98159 -5.49732,-5.16674 -11.82143,-9.44459 -18.88918,-12.79281 z M 255.99999,8.0000031 C 119.02153,8.0000031 8.0000034,119.04185 8.0000034,255.99998 8.0000034,392.95812 119.02153,504 255.99999,504 392.97849,504 504,392.95812 504,255.99998 504,119.04185 392.97849,8.0000031 255.99999,8.0000031 Z M 173.66372,365.51268 H 144.27546 V 160.1481 h 29.38826 z M 158.94954,138.69619 c -11.13935,0 -20.21208,-9.01056 -20.21208,-20.21208 0,-11.11841 9.05183,-20.191181 20.21208,-20.191181 11.18058,0 20.23244,9.051831 20.23244,20.191181 -0.0219,11.22184 -9.05186,20.21208 -20.23244,20.21208 z m 241.3866,163.59715 c -5.29051,12.54475 -12.83407,23.58066 -22.65053,33.08742 -9.98203,9.83734 -21.59659,17.19443 -34.84378,22.19616 -7.74983,3.01709 -14.83852,5.06335 -21.30725,6.11726 -6.4891,1.01267 -18.82759,1.50883 -37.07593,1.50883 H 219.5033 V 160.1481 h 69.23318 c 27.96195,0 50.03378,4.1541 66.31951,12.54476 16.26485,8.36977 29.18144,20.72859 38.79164,36.97254 9.61013,16.26483 14.4254,34.01757 14.4254,53.19607 0.0227,13.76426 -2.66619,26.90802 -7.93576,39.43187 z" style="stroke-width:0.07717"></path> </g></svg></a> <a href="http://lattes.cnpq.br/9761288418931193"><svg viewbox="0 0 448 512" style="height:1em;position:relative;display:inline-block;top:.1em;fill:#2268bc;" xmlns="http://www.w3.org/2000/svg"> <g label="icon" id="layer6" groupmode="layer"> <path id="path2" d="M 97.871854,434.73261 C 51.534463,339.78442 23.965602,282.44369 23.965602,281.02029 c 0,-2.32214 2.831558,-1.99974 30.672084,3.45957 48.965204,9.61389 75.126384,12.32631 118.735104,12.34258 57.69707,0.0159 104.6807,-9.1222 141.18473,-27.4842 19.31194,-9.71476 30.92555,-18.32755 40.43708,-29.99337 11.716,-14.37824 15.47977,-24.28004 15.61512,-40.94646 0.11867,-15.85237 -2.01801,-24.21167 -11.19035,-43.60874 -3.62892,-7.66433 -6.8168,-16.46265 -7.12098,-19.54964 -0.47493,-4.96814 -0.0684,-5.68084 3.59445,-6.10361 8.00292,-0.94846 47.50732,37.40224 62.05491,60.24069 25.07592,39.38574 27.11161,81.99337 5.88408,123.1953 -13.03903,25.31314 -27.44972,42.82712 -51.57723,62.73362 -40.09844,33.06211 -86.70754,56.08608 -151.06833,74.63514 C 186.61557,459.91141 130.71496,472 119.20225,472 c -2.44075,0 -7.02006,-8.00296 -21.295953,-37.28315 l -0.03402,0.0151 z M 110.77601,281.61191 C 65.760136,275.77998 27.985273,270.70947 26.81537,270.33687 24.815625,269.6926 17.660677,245.82107 13.624773,226.39004 12.607902,221.4726 11.11559,208.45131 10.30202,197.43174 6.6716589,148.26132 17.370799,114.26648 46.041165,83.697237 94.583571,31.98518 198.51713,25.694031 315.77765,67.369458 c 20.58274,7.324215 28.75504,12.410983 24.975,15.580668 -2.79708,2.339846 -21.75315,2.305883 -54.50916,-0.102387 -51.20464,-3.763759 -90.18335,3.357226 -110.27491,20.176211 -30.58742,25.60158 -25.92345,81.72365 13.53071,162.68196 4.27316,8.76586 8.57881,17.34466 9.56318,19.09094 2.28966,4.01773 0.62803,7.74899 -3.3572,7.56196 -1.69755,-0.0813 -39.91486,-4.91203 -84.92926,-10.74592 z m 151.01614,-44.04726 c -35.92814,-6.45997 -68.22691,-28.7388 -78.65437,-54.22127 -5.00209,-12.24165 -4.76437,-28.2131 0.57585,-37.77483 4.83279,-8.64723 17.3107,-18.64993 28.48481,-22.83843 18.59924,-6.96791 51.17019,-4.18853 74.90688,6.40975 22.53229,10.05487 42.50672,27.73816 49.93183,44.18457 9.52925,21.10841 1.59321,44.65955 -18.82072,55.90059 -13.5307,7.44285 -39.82676,11.32572 -56.44249,8.34109 h 0.0181 z" style="stroke-width:0.0675235"></path> </g></svg></a>
+</center>
+</div><div class="column" style="width:60%;">
+<ul>
+<li><p>Ecólogo (2014)</p></li>
+<li><p>Doutorando em Ecologia (2020-2024)</p></li>
+<li><p>Ecologia Espacial</p></li>
+<li><p>Modelagem Ecológica</p></li>
+<li><p>Análise de Dados Geoespaciais</p></li>
+<li><p>Ecologia e Conservação de Anfíbios</p></li>
+<li><p><em>Open source</em> [R, QGIS, GRASS GIS, GNU/Linux, …]</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Análises Ecológicas no R (2022)</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<center>
+<img src="img/aer.jpeg" href="https://analises-ecologicas.com/" style="width:90%">
+</center>
+</div><div class="column" style="width:60%;">
+<ul>
+<li><p>15 capítulos: perguntas em ecologia, linguagem R, tidyverse, análises univariadas, multivariadas e geoespaciais</p></li>
+<li><p><a href="https://analises-ecologicas.com/">bookdown</a></p></li>
+<li><p><a href="https://canal6.com.br/livreacesso/livro/analises-ecologicas-no-r/">PDF</a></p></li>
+<li><p><a href="https://www.amazon.com.br/An%C3%A1lises-ecol%C3%B3gicas-Ferdo-Rodrigues-Silva/dp/857917564X/ref=sr_1_1?keywords=9788579175640&amp;qid=1654379366&amp;sr=8-1">Amazon</a></p></li>
+<li><p><a href="https://github.com/paternogbc/livro_aer">Código Fonte</a></p></li>
+<li><p><a href="https://www.youtube.com/channel/UCLSVSCnmvf2k6OoWZCnEO4w">YouTube</a></p></li>
+</ul>
+</div>
+</div>
+<div class="footer">
+<p><a href="https://analises-ecologicas.com/">Da Silva et al.&nbsp;(2022)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Conteúdo</h2>
+<p><br><br><br></p>
+<p>Tempo: 2 horas</p>
+<ol type="1">
+<li>Linguagem R (30 min.)</li>
+<li>Análise exploratória de dados (30 min.)</li>
+<li>Análise de dados multivariados (60 min.)</li>
+</ol>
+</section>
+<section class="slide level2">
+<h2>IMPORTANTE!!!</h2>
+<p><strong>Estamos num espaço seguro e amigável</strong></p>
+<p>Sintam-se à vontade para me interromper e tirar dúvidas</p>
+<center>
+<img src="img/general_starwars_teamwork.png" style="width:50%">
+</center>
+<div class="footer">
+<p><a href="https://twitter.com/allison_horst">@allison_horst</a></p>
+</div>
+</section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>1. Linguagem R</h1>
+
+</section>
+<section class="slide level2">
+<h2>Definição</h2>
+<p>O R é uma <strong>linguagem de programação livre</strong> (<em>open source</em>), direcionada à <strong>manipulação, análise e visualização de dados</strong>, com diversas <strong>expansões</strong> (<em>pacotes</em>) para <strong>dados</strong> ou <strong>análises</strong> específicas</p>
+<center>
+<img src="img/r_logo.svg" style="width:40%">
+</center>
+<div class="footer">
+<p><a href="https://www.r-project.org/">R</a></p>
+</div>
+</section>
+<section class="slide level2 smaller">
+<h2>Histórico - Linguagem S</h2>
+<p><strong>John M. Chambers (Stanford University, CA, EUA)</strong></p>
+<p><br></p>
+<p><strong>Versões</strong></p>
+<ul>
+<li>Old S (1976-1987)</li>
+<li>New S (1988-1997)</li>
+<li>S4 (1998)</li>
+</ul>
+<p><strong>IDE (<em>Integrated Development Environment</em>)</strong></p>
+<ul>
+<li>Interface: S-PLUS (1988-2008)</li>
+</ul>
+<p><img data-src="img/person_john_chambers.jpg" class="absolute" style="top: 200px; right: 10px; width: 400px; height: 400px; "></p>
+<div class="footer">
+<p><a href="http://vita.had.co.nz/papers/r-s.pdf">Wickham (2013)</a></p>
+</div>
+</section>
+<section class="slide level2 smaller">
+<h2>Histórico - Linguagem R</h2>
+<p><strong>Robert Gentleman e Ross Ihaka (Auckland University, NZ)</strong></p>
+<p><br></p>
+<p><strong>Versões</strong></p>
+<ul>
+<li>Desenvolvimento (1993-2000)</li>
+<li>Versão 1 (2000-2004)</li>
+<li>Versão 2 (2004-2013)</li>
+<li>Versão 3 (2013-2020)</li>
+<li>Versão 4 (2020-atual)</li>
+</ul>
+<p><strong>IDE (<em>Integrated Development Environment</em>)</strong></p>
+<ul>
+<li>Interface: RStudio (2011-atual)</li>
+<li>Atualmente: <strong>R Core Team</strong></li>
+</ul>
+<p><img data-src="img/person_gentleman_ihaka.jpg" class="absolute" style="top: 200px; right: -50px; width: 550px; height: 400px; "></p>
+<div class="footer">
+<p><a href="http://vita.had.co.nz/papers/r-s.pdf">Wickham (2013)</a></p>
+</div>
+</section>
+<section class="slide level2 smaller">
+<h2>Histórico - Linguagem R</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div>
+<center>
+<img src="img/r_history.png" style="width:75%">
+</center>
+</div>
+</div><div class="column" style="width:50%;">
+<div>
+<center>
+<img src="img/r_history_plot.png" style="width:100%">
+</center>
+</div>
+</div>
+</div>
+<div class="footer">
+<p><a href="https://doi.org/10.3390/life12050648">Giorgi et al.&nbsp;(2022)</a></p>
+</div>
+</section>
+<section class="slide level2 smaller">
+<h2>Aplicações</h2>
+<p><strong>Manipulação, visualização e análise de dados</strong></p>
+<ul>
+<li>Estatísticas univariadas e multivariadas</li>
+<li>Análises de dados ecológicos</li>
+<li>Análise de dados espaciais, temporais e sonoros</li>
+<li>Análise de dados funcionais, genéticos e filogenéticos</li>
+<li>Análise de dados geoespaciais e sensoriamento remoto</li>
+<li>Visualização de todos os tipos de dados anteriores</li>
+</ul>
+<p><strong>R Markdown e quarto</strong></p>
+<ul>
+<li>Textos em HTML, PDF, Word, ODT, Markdown</li>
+<li>Slides, Websites, Blogs, Livros e Artigos</li>
+<li>Shiny</li>
+</ul>
+<p><img data-src="img/r_markdown_output_formats.png" class="absolute" style="top: 150px; right: -100px; width: 400px; height: 400px; "> <img data-src="img/quarto.png" class="absolute" style="top: 570px; right: -100px; width: 400px; height: 100px; "></p>
+<div class="footer">
+<p><a href="https://rmarkdown.rstudio.com/">R Markdown</a>, <a href="https://shiny.rstudio.com/">shiny</a>, <a href="https://quarto.org/">quarto</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>IDE</h2>
+<p>Ambiente de Desenvolvimento Integrado (<em>Integrated Development Environment</em>)</p>
+<p><br><br></p>
+<center>
+<img src="img/rstudio_logo.svg" style="width:80%">
+</center>
+<div class="footer">
+<p><a href="https://posit.co/downloads/">RStudio</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>IDE</h2>
+<p>Ambiente de Desenvolvimento Integrado (<em>Integrated Development Environment</em>)</p>
+<p><img data-src="img/r_rstudio01.png" class="absolute" style="top: 200px; right: 180px; width: 700px; height: 180px; "> <img data-src="img/r_rstudio02.png" class="absolute" style="top: 370px; right: 180px; width: 700px; height: 280px; "></p>
+<div class="footer">
+<p><a href="https://posit.co/downloads/">Ismay &amp; Kim (2020)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Interface</h2>
+<center>
+<img src="img/rstudio.png" style="width:100%">
+</center>
+<div class="footer">
+<p><a href="https://www.rstudio.com/">RStudio</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Projeto R (.Rproj)</h2>
+<ul>
+<li>Facilita o trabalho em múltiplos ambientes</li>
+<li>Cada projeto possui seu diretório, documentos e workspace</li>
+<li>Permite controle de versão (git e GitHub)</li>
+</ul>
+<p><br></p>
+<center>
+<img src="img/rstudio_project_logo.png" style="width:25%">
+</center>
+<div class="footer">
+<p><a href="https://www.rstudio.com/">RStudio</a></p>
+</div>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Antes de começarmos…</h1>
+
+</section>
+<section class="slide level2">
+<h2>Conferindo os computadores</h2>
+<center>
+<img src="img/general_hard_soft_bg.png" style="width:80%">
+</center>
+<div class="footer">
+<p><a href="https://www.instagram.com/cafecomcodigo/?hl=pt">Café com Código</a></p>
+</div>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1></h1>
+<center>
+<img src="img/code.png" style="width:45%">
+</center>
+</section>
+<section class="slide level2">
+<h2>Console</h2>
+<p>O console é onde a linguagem R instalada é carregada para executar os códigos</p>
+<center>
+<img src="img/rstudio_script.png" style="width:55%">
+</center>
+<div class="footer">
+<p><a href="https://www.rstudio.com/">RStudio</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Console</h2>
+<ul>
+<li><p>Na janela do console aparece o símbolo <code>&gt;</code>, seguido de uma barra vertical <code>|</code> que fica piscando (cursor), onde digitamos ou enviamos nossos códigos do script</p></li>
+<li><p>Vamos digitar <code>10 + 2</code> e apertar a tecla <code>Enter</code> para que essa operação seja executada</p></li>
+<li><p>O resultado retorna o valor <code>12</code>, precedido do valor <code>1</code> entre colchetes <code>[1]</code></p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="dv">10</span> <span class="sc">+</span> <span class="dv">2</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Console</h2>
+<ul>
+<li><p>Os colchetes <code>[]</code> demonstram a posição do elemento numa sequência de valores</p></li>
+<li><p>Vamos criar uma sequência usando o operador <code>:</code> para demonstrar isso</p></li>
+<li><p>O número que aparecer nos colchetes vai depender da largura das janelas</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">42</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+[26] 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2 smaller">
+<h2>Console</h2>
+<p><strong>Noções de programação</strong></p>
+<p>Número inteiro (<em>integer</em>)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="dv">1</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p>Número decimal (<em>float</em> ou <em>double</em>)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fl">1.2</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.2</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Texto entre aspas simples (<code>''</code>) ou duplas (<code>""</code>) (<em>character</em> ou <em>string</em>)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="st">"Este é o número 1"</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Este é o número 1"</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Lógico (letras maiúsculas) (<em>booleano</em>)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="cn">TRUE</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="cn">FALSE</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Script</h2>
+<p>Onde os códigos são escritos e salvos no formato .R</p>
+<ul>
+<li>Atalho: <code>ctrl + shift + N</code></li>
+</ul>
+<center>
+<img src="img/rstudio_script.jpg" style="width:80%">
+</center>
+</section>
+<section class="slide level2">
+<h2>Script</h2>
+<ul>
+<li><p>Os códigos devem ser digitados preferencialmente no script</p></li>
+<li><p>Para executar um código, deixem o cursor em qualquer lugar da linha</p></li>
+<li><p>Atalho: <code>ctrl + enter</code></p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="dv">1</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Script</h2>
+<p><strong>Salvar um script</strong></p>
+<ul>
+<li>Atalho: <code>ctrl + S</code></li>
+</ul>
+<center>
+<img src="img/rstudio_script.png" style="width:50%">
+</center>
+</section>
+<section class="slide level2">
+<h2>Script</h2>
+<p><strong>Comentários (#)</strong></p>
+<ul>
+<li><p>Comentários não são lidos pelo R e descrevem informações em nosso script</p></li>
+<li><p>São representados pelo <code>#</code> (hash) ou <code>#'</code> (hash-linha)</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># comentarios</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="co"># o r nao le o codigo depois do # (hash)</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a></span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="dv">42</span> <span class="co"># essas palavras nao sao executadas, apenas o 42</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 42</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Script</h2>
+<p><strong>Comentários (#)</strong></p>
+<ul>
+<li><p>Sempre comece um script com um cabeçalho</p></li>
+<li><p>Ajuda a lembrar o que o script faz e quando foi escrito</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co">#' ----</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="co">#' título: modelos estatisticos em ecologia</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a><span class="co">#' autor: seu nome</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a><span class="co">#' data: 2023-04-26</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a><span class="co">#' ----</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1></h1>
+<center>
+<img src="img/general_comment_gandalf.jpg" style="width:50%">
+</center>
+</section>
+<section class="slide level2">
+<h2>Operadores</h2>
+<p><strong>Operadores aritméticos (retorna números)</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Operador</th>
+<th style="text-align: center;">Descrição</th>
+<th style="text-align: center;">Uso</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">+</td>
+<td style="text-align: center;">Adição</td>
+<td style="text-align: center;">a + b</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">–</td>
+<td style="text-align: center;">Subtração</td>
+<td style="text-align: center;">a - b</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">*</td>
+<td style="text-align: center;">Multiplicação</td>
+<td style="text-align: center;">a * b</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">/</td>
+<td style="text-align: center;">Divisão</td>
+<td style="text-align: center;">a / b</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">%%</td>
+<td style="text-align: center;">Resto da divisão</td>
+<td style="text-align: center;">a %% b</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">%/%</td>
+<td style="text-align: center;">Quociente da divisão</td>
+<td style="text-align: center;">a %/% b</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">^</td>
+<td style="text-align: center;">Potenciação</td>
+<td style="text-align: center;">a^b</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+<h2>Operadores</h2>
+<p><strong>Operadores relacionais (retorna TRUE|FALSE)</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Operador</th>
+<th style="text-align: center;">Descrição</th>
+<th style="text-align: center;">Uso</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">&lt;</td>
+<td style="text-align: center;">Menor</td>
+<td style="text-align: center;">a &lt; b</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">&gt;</td>
+<td style="text-align: center;">Maior</td>
+<td style="text-align: center;">a &gt; b</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">&lt;=</td>
+<td style="text-align: center;">Menor ou igual</td>
+<td style="text-align: center;">a &lt;= b</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">&gt;=</td>
+<td style="text-align: center;">Maior ou igual</td>
+<td style="text-align: center;">a &gt; = b</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">==</td>
+<td style="text-align: center;">Igual</td>
+<td style="text-align: center;">a == b</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">!=</td>
+<td style="text-align: center;">Não igual (diferente)</td>
+<td style="text-align: center;">a!=b</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+<h2>Operadores</h2>
+<p><strong>Ordem das operações aritméticas</strong></p>
+<p><br></p>
+<p><code>()</code> &gt; <code>^</code> &gt; <code>*</code> ou <code>/</code> &gt; <code>+</code> ou <code>-</code></p>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># sem especificar - segue a ordem das operações</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="dv">1</span> <span class="sc">*</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span> <span class="sc">^</span> <span class="dv">2</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.5</code></pre>
+</div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co"># especificando - segue a ordem dos parênteses</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>((<span class="dv">1</span> <span class="sc">*</span> <span class="dv">2</span>) <span class="sc">+</span> (<span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span>)) <span class="sc">^</span> <span class="dv">2</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 9</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Objetos</h2>
+<p>Palavras que atribuímos (guardamos) dados possibilitando sua manipulação</p>
+<ul>
+<li><p>Atribuição (<code>&lt;-</code>)</p></li>
+<li><p>palavra &lt;- dados</p></li>
+<li><p>Atalho: <code>alt + -</code></p></li>
+</ul>
+<p><img data-src="img/general_assign.jpg" class="absolute" style="top: 200px; right: 50px; width: 380px; height: 480px; "></p>
+</section>
+<section class="slide level2">
+<h2>Objetos</h2>
+<p>Vamos atribuir o valor <code>10</code> à palavra <code>eco</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># atribuicao - simbolo (&lt;-)</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>eco <span class="ot">&lt;-</span> <span class="dv">10</span> </span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1></h1>
+<center>
+<img src="img/gif_where.gif" style="width:100%">
+</center>
+</section>
+<section class="slide level2">
+<h2>Objetos</h2>
+<ul>
+<li><p>Sempre confira a atribuição</p></li>
+<li><p><strong>Dica</strong>: chame o objeto novamente</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co"># atribuicao - simbolo (&lt;-)</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a>eco <span class="ot">&lt;-</span> <span class="dv">10</span> </span>
+<span id="cb27-3"><a href="#cb27-3"></a>eco</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Objetos</h2>
+<p><strong>Seja criativo</strong></p>
+<p>O R sobrescreve os valores dos objetos com o mesmo nome</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co"># eco vale 10</span></span>
+<span id="cb29-2"><a href="#cb29-2"></a>eco <span class="ot">&lt;-</span> <span class="dv">10</span> </span>
+<span id="cb29-3"><a href="#cb29-3"></a>eco</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10</code></pre>
+</div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co"># agora eco vale 2</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a>eco <span class="ot">&lt;-</span> <span class="dv">2</span> </span>
+<span id="cb31-3"><a href="#cb31-3"></a>eco</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2 smaller">
+<h2>Objetos</h2>
+<p><strong>Seja criativo, mas nem tanto…</strong></p>
+<p>O R tem limitações ao nomear objetos!</p>
+<ol type="1">
+<li><p>Começar por letras (<code>a-z</code> ou <code>A-Z</code>) ou pontos (<code>.</code>)</p></li>
+<li><p>Conter letras (<code>a-z</code> ou <code>A-Z</code>), números (<code>0-9</code>), underscores (<code>_</code>) ou pontos (<code>.</code>)</p></li>
+<li><p><em>Case-sensitive</em>, i.e., ele difere letras maiúsculas de minúsculas</p></li>
+<li><p>Evitar utilizar letras maiúsculas, acentos ou cedilha (<code>ç</code>)</p></li>
+<li><p>Não podem ser iguais a nomes especiais: <code>break, else, FALSE, for, function, if, Inf, NA, NaN, next, repeat, return, TRUE, while</code></p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="cf">for</span> <span class="ot">&lt;-</span> <span class="dv">1</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error: &lt;text&gt;:1:5: unexpected assignment
+1: for &lt;-
+        ^</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Objetos</h2>
+<p><strong>Ambiente (<em>Environment</em>)</strong></p>
+<p>Os objetos podem ser visualizados no painel <em>Environment</em></p>
+<center>
+<img src="img/rstudio_script.png" style="width:50%">
+</center>
+</section>
+<section class="slide level2">
+<h2>Objetos</h2>
+<p>Podemos utilizar objetos para fazer operações</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co"># definir dois objetos</span></span>
+<span id="cb35-2"><a href="#cb35-2"></a>eco1 <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb35-3"><a href="#cb35-3"></a>eco2 <span class="ot">&lt;-</span> <span class="dv">2</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co"># operacoes com objetos</span></span>
+<span id="cb36-2"><a href="#cb36-2"></a>eco1 <span class="sc">+</span> eco2 <span class="co"># adicao</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>eco1 <span class="sc">-</span> eco2 <span class="co"># subtracao</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 8</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>eco1 <span class="sc">*</span> eco2 <span class="co"># multiplicacao</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>eco1 <span class="sc">/</span> eco2 <span class="co"># divisao</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Objetos</h2>
+<p>Podemos utilizar objetos para atribuir resultados de operações</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="co"># operacoes com objetos e atribuicao</span></span>
+<span id="cb44-2"><a href="#cb44-2"></a>adi <span class="ot">&lt;-</span> eco1 <span class="sc">+</span> eco2 <span class="co"># adicao</span></span>
+<span id="cb44-3"><a href="#cb44-3"></a>adi</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a>sub <span class="ot">&lt;-</span> eco1 <span class="sc">-</span> eco2 <span class="co"># subtracao</span></span>
+<span id="cb46-2"><a href="#cb46-2"></a>sub</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 8</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a>mul <span class="ot">&lt;-</span> eco1 <span class="sc">*</span> eco2 <span class="co"># multiplicacao</span></span>
+<span id="cb48-2"><a href="#cb48-2"></a>mul</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a>div <span class="ot">&lt;-</span> eco1 <span class="sc">/</span> eco2 <span class="co"># divisao</span></span>
+<span id="cb50-2"><a href="#cb50-2"></a>div</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Objetos</h2>
+<p><strong>Tipos de objetos</strong></p>
+<center>
+<img src="img/r_data_structures_general.png" style="width:70%">
+</center>
+</section>
+<section class="slide level2 smaller">
+<h2>Funções</h2>
+<p>Códigos que realizam operações em argumentos</p>
+<ul>
+<li>Estrutura de uma função:</li>
+</ul>
+<p><code>nome_da_funcao(argumento1, argumento2)</code></p>
+<p><br></p>
+<ol type="1">
+<li><strong>Nome da função</strong>: remete ao que ela faz (inglês)</li>
+<li><strong>Parênteses</strong>: limitam a função</li>
+<li><strong>Argumentos</strong>: onde a função atuará</li>
+<li><strong>Vírgulas</strong>: separam os argumentos</li>
+</ol>
+<p><img data-src="img/code_function_annotated.png" class="absolute" style="top: 350px; right: -100px; width: 600px; height: 300px; "></p>
+</section>
+<section class="slide level2">
+<h2>Funções</h2>
+<p><strong>Exemplos</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1"></a><span class="co"># soma</span></span>
+<span id="cb52-2"><a href="#cb52-2"></a><span class="fu">sum</span>(<span class="dv">10</span>, <span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1"></a><span class="co"># soma de objetos</span></span>
+<span id="cb54-2"><a href="#cb54-2"></a><span class="fu">sum</span>(eco1, eco2)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1"></a><span class="co"># soma de objetos atribuidos a objetos</span></span>
+<span id="cb56-2"><a href="#cb56-2"></a>eco_sum <span class="ot">&lt;-</span> <span class="fu">sum</span>(eco1, eco2)</span>
+<span id="cb56-3"><a href="#cb56-3"></a>eco_sum</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Funções</h2>
+<p><strong>Argumentos</strong></p>
+<p>Os argumentos podem ser de dois tipos:</p>
+<ol type="1">
+<li><p><strong>Objetos ou valores</strong>: dados onde a função irá atuar</p></li>
+<li><p><strong>Parâmetros</strong>: mudam o comportamento da função (texto = <code>TRUE</code>, <code>FALSE</code> ou <code>"texto"</code>)</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1"></a><span class="fu">sum</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="cn">NA</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a><span class="fu">sum</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="cn">NA</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Funções</h2>
+<p><strong>Argumentos como valores</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a><span class="co"># funcoes - argumentos como valores</span></span>
+<span id="cb62-2"><a href="#cb62-2"></a><span class="fu">sum</span>(<span class="dv">10</span>, <span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a><span class="fu">prod</span>(<span class="dv">10</span>, <span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20</code></pre>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Argumentos como objetos</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a><span class="co"># funcoes - argumentos como objetos</span></span>
+<span id="cb66-2"><a href="#cb66-2"></a><span class="fu">sum</span>(eco1, eco2)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a><span class="fu">prod</span>(eco1, eco2)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Funções</h2>
+<p><strong>Argumentos como parâmetros</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a><span class="co"># repeticao - vezes</span></span>
+<span id="cb70-2"><a href="#cb70-2"></a><span class="fu">rep</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">times =</span> <span class="dv">5</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5</code></pre>
+</div>
+</div>
+<p><br></p>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1"></a><span class="co"># repeticao - cada</span></span>
+<span id="cb72-2"><a href="#cb72-2"></a><span class="fu">rep</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">each =</span> <span class="dv">5</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3 4 4 4 4 4 5 5 5 5 5</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Funções</h2>
+<p><strong>Atribuição de resultados a objetos</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1"></a><span class="co"># atribuicao dos resultados</span></span>
+<span id="cb74-2"><a href="#cb74-2"></a>rep_times <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">times =</span> <span class="dv">5</span>)</span>
+<span id="cb74-3"><a href="#cb74-3"></a>rep_times</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5</code></pre>
+</div>
+</div>
+<p><br></p>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1"></a>rep_each <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">each =</span> <span class="dv">5</span>)</span>
+<span id="cb76-2"><a href="#cb76-2"></a>rep_each</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3 4 4 4 4 4 5 5 5 5 5</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Funções</h2>
+<p><strong>Atribuição, função e linha temporal</strong></p>
+<p>Criar dois objetos</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1"></a><span class="co"># criar dois objetos</span></span>
+<span id="cb78-2"><a href="#cb78-2"></a>foo <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb78-3"><a href="#cb78-3"></a>bar <span class="ot">&lt;-</span> <span class="dv">3</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Somar esses objetos e atribuição</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1"></a><span class="co"># somar e atribuir</span></span>
+<span id="cb79-2"><a href="#cb79-2"></a>su <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo, bar)</span>
+<span id="cb79-3"><a href="#cb79-3"></a>su</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<p>Raiz quadrada e atribuição</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1"></a><span class="co"># raiz e atribuir</span></span>
+<span id="cb81-2"><a href="#cb81-2"></a>sq <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(su)</span>
+<span id="cb81-3"><a href="#cb81-3"></a>sq</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.236068</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Funções</h2>
+<p><strong>Atribuição, função e linha temporal</strong></p>
+<ol type="1">
+<li><p>Atribuição de dados a objetos</p></li>
+<li><p>Funções que operam e mudam esses dados</p></li>
+<li><p>Nova atribuição desses resultados a novos objetos</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1"></a><span class="co"># criar dois objetos</span></span>
+<span id="cb83-2"><a href="#cb83-2"></a>foo <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb83-3"><a href="#cb83-3"></a>bar <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb83-4"><a href="#cb83-4"></a></span>
+<span id="cb83-5"><a href="#cb83-5"></a><span class="co"># somar e atribuir</span></span>
+<span id="cb83-6"><a href="#cb83-6"></a>su <span class="ot">&lt;-</span> <span class="fu">sum</span>(foo, bar)</span>
+<span id="cb83-7"><a href="#cb83-7"></a></span>
+<span id="cb83-8"><a href="#cb83-8"></a><span class="co"># raiz e atribuir</span></span>
+<span id="cb83-9"><a href="#cb83-9"></a>sq <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(su)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2 smaller">
+<h2>Ajuda</h2>
+<p>Descreve as informações de uma função</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1"></a><span class="co"># descreve as informacoes de uma funcao</span></span>
+<span id="cb84-2"><a href="#cb84-2"></a><span class="fu">help</span>(<span class="st">"mean"</span>) <span class="co"># arquivo .html</span></span>
+<span id="cb84-3"><a href="#cb84-3"></a>?mean</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="img/r_help.png" class="absolute" style="top: 220px; right: 600px; width: 450px; height: 450px; "></p>
+</div><div class="column" style="width:50%;">
+<p><br> <strong>Description</strong>: descrição da função<br>
+<strong>Usage</strong>: uso da função e argumentos<br>
+<strong>Arguments</strong>: argumentos e suas especificações<br>
+<strong>Details</strong>: detalhes da função<br>
+<strong>Value</strong>: interpretar a saída (<em>output</em>)<br>
+<strong>Note</strong>: notas sobre a função<br>
+<strong>Authors</strong>: autores da função<br>
+<strong>References</strong>: referências bibliográficas da função<br>
+<strong>See also</strong>: funções relacionadas<br>
+<strong>Examples</strong>: exemplos do uso da função</p>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Pacotes</h2>
+<p>Conjunto de funções extras para executar tarefas específicas</p>
+<center>
+<img src="img/r_packages.svg" style="width:70%">
+</center>
+</section>
+<section class="slide level2">
+<h2>Pacotes</h2>
+<p>Duas fontes</p>
+<ul>
+<li>CRAN (<em>Comprehensive R Archive Network</em>)</li>
+<li>GitHub (Repositório de códigos)</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1"></a><span class="co"># numero de pacotes no cran</span></span>
+<span id="cb85-2"><a href="#cb85-2"></a><span class="fu">nrow</span>(<span class="fu">available.packages</span>())</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<center>
+<img src="img/r_number_packages.png" style="width:35%">
+</center>
+<div class="footer">
+<p><a href="https://cran.r-project.org/">CRAN</a>, <a href="https://www.r-bloggers.com/2017/03/scraping-cran-with-rvest/">Scraping CRAN with rvest</a></p>
+</div>
+</section>
+<section class="slide level2 smaller">
+<h2>Pacotes</h2>
+<p><strong>Instalação de pacotes</strong></p>
+<ol type="1">
+<li>Download do pacote para o computador (como instalar um software/APP)</li>
+<li>Precisa estar conectado à internet</li>
+<li>O nome do pacote precisa estar entre aspas</li>
+<li>Função (CRAN): <code>install.packages("pacote")</code></li>
+</ol>
+<p><strong>Instalar o pacote vegan</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1"></a><span class="co"># instalar pacotes</span></span>
+<span id="cb86-2"><a href="#cb86-2"></a><span class="fu">install.packages</span>(<span class="st">"vegan"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Verificar pacotes instalados</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1"></a><span class="co"># verificar pacotes instalados</span></span>
+<span id="cb87-2"><a href="#cb87-2"></a><span class="fu">library</span>()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2 smaller">
+<h2>Pacotes</h2>
+<p><strong>Carregamento de pacotes</strong></p>
+<ol type="1">
+<li>Carregar o pacote para o R (como abrir software/APP)</li>
+<li>Carrega-se toda vez que se abre o R</li>
+<li>Não precisa estar conectado à internet</li>
+<li>O nome do pacote não precisa estar entre aspas</li>
+<li>Funções: <code>library(pacote)</code> ou <code>require(pacote)</code></li>
+</ol>
+<p><strong>Carregar o pacote vegan</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1"></a><span class="co"># carregar pacotes</span></span>
+<span id="cb88-2"><a href="#cb88-2"></a><span class="fu">library</span>(vegan)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Verificar pacotes carregados</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1"></a><span class="co"># verificar pacotes carregados</span></span>
+<span id="cb89-2"><a href="#cb89-2"></a><span class="fu">search</span>()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] ".GlobalEnv"        "package:vegan"     "package:lattice"  
+ [4] "package:permute"   "package:stats"     "package:graphics" 
+ [7] "package:grDevices" "package:utils"     "package:datasets" 
+[10] "package:methods"   "Autoloads"         "package:base"     </code></pre>
+</div>
+</div>
+</section></section>
+<section class="title-slide slide level1 center">
+<h1>Principais erros</h1>
+
+</section>
+
+<section class="title-slide slide level1 center">
+<h1>Se seu script rodou sem erros, tem algo errado…</h1>
+
+</section>
+
+<section class="title-slide slide level1 center">
+<h1></h1>
+<center>
+<img src="img/general_make_impossible.png" style="width:60%">
+</center>
+</section>
+
+<section class="title-slide slide level1 center">
+<h1></h1>
+<center>
+<img src="img/gif_bugcat_error.gif" style="width:70%">
+</center>
+</section>
+
+<section class="title-slide slide level1 center">
+<h1></h1>
+<center>
+<img src="img/gif_bugcat_sad.gif" style="width:70%">
+</center>
+</section>
+
+<section>
+<section class="title-slide slide level1 center">
+<h1></h1>
+<p>Help me help you: um bestiário para entender erros e pedir ajuda no R</p>
+<center>
+<img src="img/debugging.png" style="width:40%">
+</center>
+<div class="footer">
+<p><a href="https://anotherecoblog.wordpress.com/2020/08/26/help-me-help-you-um-bestiario-para-entender-erros-e-pedir-ajuda-no-r/">Help me help you: um bestiário para entender erros e pedir ajuda no R</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Principais erros</h2>
+<p><strong>1. Esquecer de completar um código (+)</strong></p>
+<p>Parênteses</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1"></a><span class="fu">sum</span>(<span class="dv">1</span>, <span class="dv">2</span></span>
+<span id="cb91-2"><a href="#cb91-2"></a>    <span class="sc">+</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error: &lt;text&gt;:3:0: unexpected end of input
+1: sum(1, 2
+2:     +
+  ^</code></pre>
+</div>
+</div>
+<p>Aspas</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1"></a><span class="st">"string</span></span>
+<span id="cb93-2"><a href="#cb93-2"></a><span class="st">+</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error: &lt;text&gt;:1:1: unexpected INCOMPLETE_STRING
+1: "string
+2: +
+   ^</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Principais erros</h2>
+<p><strong>2. Esquecer da vírgula</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1"></a><span class="fu">sum</span>(<span class="dv">1</span> <span class="dv">2</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error: &lt;text&gt;:1:7: unexpected numeric constant
+1: sum(1 2
+          ^</code></pre>
+</div>
+</div>
+<p><br></p>
+<p><strong>3. Chamar um objeto errado</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1"></a>obj <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb97-2"><a href="#cb97-2"></a>OBJ</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in eval(expr, envir, enclos): object 'OBJ' not found</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Principais erros</h2>
+<p><strong>4. Esquecer de carregar um pacote</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1"></a><span class="co"># carregar dados</span></span>
+<span id="cb99-2"><a href="#cb99-2"></a><span class="fu">data</span>(dune)</span>
+<span id="cb99-3"><a href="#cb99-3"></a></span>
+<span id="cb99-4"><a href="#cb99-4"></a><span class="co"># funcao do pacote vegan</span></span>
+<span id="cb99-5"><a href="#cb99-5"></a><span class="fu">decostand</span>(dune, <span class="st">"hell"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in decostand(dune, "hell"): could not find function "decostand"</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Principais erros</h2>
+<p><strong>4. Esquecer de carregar um pacote</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1"></a><span class="co"># carregar o pacote</span></span>
+<span id="cb101-2"><a href="#cb101-2"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb101-3"><a href="#cb101-3"></a></span>
+<span id="cb101-4"><a href="#cb101-4"></a><span class="do">## carregar dados</span></span>
+<span id="cb101-5"><a href="#cb101-5"></a><span class="fu">data</span>(dune)</span>
+<span id="cb101-6"><a href="#cb101-6"></a></span>
+<span id="cb101-7"><a href="#cb101-7"></a><span class="do">## funcao do pacote vegan</span></span>
+<span id="cb101-8"><a href="#cb101-8"></a><span class="fu">decostand</span>(dune, <span class="st">"hell"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Achimill  Agrostol  Airaprae  Alopgeni  Anthodor  Bellpere  Bromhord
+1  0.2357023 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000
+2  0.2672612 0.0000000 0.0000000 0.2182179 0.0000000 0.2672612 0.3086067
+3  0.0000000 0.3162278 0.0000000 0.4183300 0.0000000 0.2236068 0.0000000
+4  0.0000000 0.4216370 0.0000000 0.2108185 0.0000000 0.2108185 0.2581989
+5  0.2156655 0.0000000 0.0000000 0.0000000 0.3049971 0.2156655 0.2156655
+6  0.2041241 0.0000000 0.0000000 0.0000000 0.2500000 0.0000000 0.0000000
+7  0.2236068 0.0000000 0.0000000 0.0000000 0.2236068 0.0000000 0.2236068
+8  0.0000000 0.3162278 0.0000000 0.3535534 0.0000000 0.0000000 0.0000000
+9  0.0000000 0.2672612 0.0000000 0.2672612 0.0000000 0.0000000 0.0000000
+10 0.3049971 0.0000000 0.0000000 0.0000000 0.3049971 0.2156655 0.3049971
+11 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000
+12 0.0000000 0.3380617 0.0000000 0.4780914 0.0000000 0.0000000 0.0000000
+13 0.0000000 0.3892495 0.0000000 0.3892495 0.0000000 0.0000000 0.0000000
+14 0.0000000 0.4082483 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000
+15 0.0000000 0.4170288 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000
+16 0.0000000 0.4605662 0.0000000 0.3481553 0.0000000 0.0000000 0.0000000
+17 0.3651484 0.0000000 0.3651484 0.0000000 0.5163978 0.0000000 0.0000000
+18 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.2721655 0.0000000
+19 0.0000000 0.0000000 0.3110855 0.0000000 0.3592106 0.0000000 0.0000000
+20 0.0000000 0.4016097 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000
+    Chenalbu  Cirsarve  Comapalu  Eleopalu  Elymrepe  Empenigr  Hyporadi
+1  0.0000000 0.0000000 0.0000000 0.0000000 0.4714045 0.0000000 0.0000000
+2  0.0000000 0.0000000 0.0000000 0.0000000 0.3086067 0.0000000 0.0000000
+3  0.0000000 0.0000000 0.0000000 0.0000000 0.3162278 0.0000000 0.0000000
+4  0.0000000 0.2108185 0.0000000 0.0000000 0.2981424 0.0000000 0.0000000
+5  0.0000000 0.0000000 0.0000000 0.0000000 0.3049971 0.0000000 0.0000000
+6  0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000
+7  0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000
+8  0.0000000 0.0000000 0.0000000 0.3162278 0.0000000 0.0000000 0.0000000
+9  0.0000000 0.0000000 0.0000000 0.0000000 0.3779645 0.0000000 0.0000000
+10 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000
+11 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.2500000
+12 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000
+13 0.1740777 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000
+14 0.0000000 0.0000000 0.2886751 0.4082483 0.0000000 0.0000000 0.0000000
+15 0.0000000 0.0000000 0.2948839 0.4662524 0.0000000 0.0000000 0.0000000
+16 0.0000000 0.0000000 0.0000000 0.4923660 0.0000000 0.0000000 0.0000000
+17 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.3651484
+18 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000
+19 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.2540003 0.4016097
+20 0.0000000 0.0000000 0.0000000 0.3592106 0.0000000 0.0000000 0.0000000
+    Juncarti  Juncbufo  Lolipere  Planlanc   Poaprat   Poatriv  Ranuflam
+1  0.0000000 0.0000000 0.6236096 0.0000000 0.4714045 0.3333333 0.0000000
+2  0.0000000 0.0000000 0.3450328 0.0000000 0.3086067 0.4082483 0.0000000
+3  0.0000000 0.0000000 0.3872983 0.0000000 0.3535534 0.3872983 0.0000000
+4  0.0000000 0.0000000 0.3333333 0.0000000 0.2981424 0.3333333 0.0000000
+5  0.0000000 0.0000000 0.2156655 0.3409972 0.2156655 0.3735437 0.0000000
+6  0.0000000 0.0000000 0.3535534 0.3227486 0.2500000 0.2886751 0.0000000
+7  0.0000000 0.2236068 0.3872983 0.3535534 0.3162278 0.3535534 0.0000000
+8  0.3162278 0.0000000 0.3162278 0.0000000 0.3162278 0.3162278 0.2236068
+9  0.3086067 0.3086067 0.2182179 0.0000000 0.3086067 0.3450328 0.0000000
+10 0.0000000 0.0000000 0.3735437 0.2641353 0.3049971 0.3049971 0.0000000
+11 0.0000000 0.0000000 0.4677072 0.3061862 0.3535534 0.0000000 0.0000000
+12 0.0000000 0.3380617 0.0000000 0.0000000 0.0000000 0.3380617 0.0000000
+13 0.0000000 0.3015113 0.0000000 0.0000000 0.2461830 0.5222330 0.2461830
+14 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.2886751
+15 0.3611576 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.2948839
+16 0.3015113 0.0000000 0.0000000 0.0000000 0.0000000 0.2461830 0.2461830
+17 0.0000000 0.0000000 0.0000000 0.3651484 0.2581989 0.0000000 0.0000000
+18 0.0000000 0.0000000 0.2721655 0.3333333 0.3333333 0.0000000 0.0000000
+19 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000
+20 0.3592106 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.3592106
+    Rumeacet  Sagiproc  Salirepe  Scorautu  Trifprat  Trifrepe  Vicilath
+1  0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000
+2  0.0000000 0.0000000 0.0000000 0.3450328 0.0000000 0.3450328 0.0000000
+3  0.0000000 0.0000000 0.0000000 0.2236068 0.0000000 0.2236068 0.0000000
+4  0.0000000 0.3333333 0.0000000 0.2108185 0.0000000 0.1490712 0.0000000
+5  0.3409972 0.0000000 0.0000000 0.2641353 0.2156655 0.2156655 0.0000000
+6  0.3535534 0.0000000 0.0000000 0.2500000 0.3227486 0.3227486 0.0000000
+7  0.2738613 0.0000000 0.0000000 0.2738613 0.2236068 0.2236068 0.0000000
+8  0.0000000 0.2236068 0.0000000 0.2738613 0.0000000 0.2236068 0.0000000
+9  0.2182179 0.2182179 0.0000000 0.2182179 0.0000000 0.2672612 0.0000000
+10 0.0000000 0.0000000 0.0000000 0.2641353 0.0000000 0.3735437 0.1524986
+11 0.0000000 0.2500000 0.0000000 0.3952847 0.0000000 0.3061862 0.2500000
+12 0.2390457 0.3380617 0.0000000 0.2390457 0.0000000 0.2927700 0.0000000
+13 0.0000000 0.2461830 0.0000000 0.2461830 0.0000000 0.2461830 0.0000000
+14 0.0000000 0.0000000 0.0000000 0.2886751 0.0000000 0.5000000 0.0000000
+15 0.0000000 0.0000000 0.0000000 0.2948839 0.0000000 0.2085144 0.0000000
+16 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000 0.0000000
+17 0.0000000 0.0000000 0.0000000 0.3651484 0.0000000 0.0000000 0.0000000
+18 0.0000000 0.0000000 0.3333333 0.4303315 0.0000000 0.2721655 0.1924501
+19 0.0000000 0.3110855 0.3110855 0.4399413 0.0000000 0.2540003 0.0000000
+20 0.0000000 0.0000000 0.4016097 0.2540003 0.0000000 0.0000000 0.0000000
+    Bracruta  Callcusp
+1  0.0000000 0.0000000
+2  0.0000000 0.0000000
+3  0.2236068 0.0000000
+4  0.2108185 0.0000000
+5  0.2156655 0.0000000
+6  0.3535534 0.0000000
+7  0.2236068 0.0000000
+8  0.2236068 0.0000000
+9  0.2182179 0.0000000
+10 0.2156655 0.0000000
+11 0.3535534 0.0000000
+12 0.3380617 0.0000000
+13 0.0000000 0.0000000
+14 0.0000000 0.4082483
+15 0.4170288 0.0000000
+16 0.3481553 0.3015113
+17 0.0000000 0.0000000
+18 0.4714045 0.0000000
+19 0.3110855 0.0000000
+20 0.3592106 0.3110855</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Principais erros</h2>
+<p><strong>5. Usar o nome da função de forma errônea</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1"></a><span class="fu">colsums</span>(dune)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in colsums(dune): could not find function "colsums"</code></pre>
+</div>
+</div>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1"></a><span class="fu">colSums</span>(dune)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Achimill Agrostol Airaprae Alopgeni Anthodor Bellpere Bromhord Chenalbu 
+      16       48        5       36       21       13       15        1 
+Cirsarve Comapalu Eleopalu Elymrepe Empenigr Hyporadi Juncarti Juncbufo 
+       2        4       25       26        2        9       18       13 
+Lolipere Planlanc  Poaprat  Poatriv Ranuflam Rumeacet Sagiproc Salirepe 
+      58       26       48       63       14       18       20       11 
+Scorautu Trifprat Trifrepe Vicilath Bracruta Callcusp 
+      54        9       47        4       49       10 </code></pre>
+</div>
+</div>
+</section></section>
+<section class="title-slide slide level1 center">
+<h1>Dúvidas?</h1>
+
+</section>
+
+<section>
+<section class="title-slide slide level1 center">
+<h1>2. Análise exploratória de dados (AED)</h1>
+
+</section>
+<section class="slide level2">
+<h2>Dados</h2>
+<table>
+<colgroup>
+<col style="width: 16%">
+<col style="width: 31%">
+<col style="width: 10%">
+<col style="width: 18%">
+<col style="width: 15%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">id</th>
+<th style="text-align: center;">especie</th>
+<th style="text-align: center;">peso</th>
+<th style="text-align: center;">comp_corpo</th>
+<th style="text-align: center;">comp_asa</th>
+<th style="text-align: center;">…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">LECAVE035</td>
+<td style="text-align: center;">Columbina talpacoti</td>
+<td style="text-align: center;">40.64</td>
+<td style="text-align: center;">158.5</td>
+<td style="text-align: center;">90.51</td>
+<td style="text-align: center;">…</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">LECAVE036</td>
+<td style="text-align: center;">Columbina talpacoti</td>
+<td style="text-align: center;">41.05</td>
+<td style="text-align: center;">149.73</td>
+<td style="text-align: center;">89.42</td>
+<td style="text-align: center;">…</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">LECAVE037</td>
+<td style="text-align: center;">Columbina talpacoti</td>
+<td style="text-align: center;">43.96</td>
+<td style="text-align: center;">147.62</td>
+<td style="text-align: center;">89.32</td>
+<td style="text-align: center;">…</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">LECAVE038</td>
+<td style="text-align: center;">Columbina talpacoti</td>
+<td style="text-align: center;">48.01</td>
+<td style="text-align: center;">153.44</td>
+<td style="text-align: center;">90.57</td>
+<td style="text-align: center;">…</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+<td style="text-align: center;">…</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+<h2>Variáveis</h2>
+<p>Cada coluna dos nossos dados é uma <strong>variável</strong> (valores variam)</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 30
+Columns: 10
+$ id         &lt;chr&gt; "LECAVE035", "LECAVE036", "LECAVE037", "LECAVE038", "LECAVE…
+$ especie    &lt;chr&gt; "Columbina talpacoti", "Columbina talpacoti", "Columbina ta…
+$ peso       &lt;dbl&gt; 40.64, 41.05, 43.96, 48.01, 43.43, 9.10, 14.20, 11.30, 13.4…
+$ comp_corpo &lt;dbl&gt; 158.50, 149.73, 147.62, 153.44, 144.63, 100.19, 104.93, 97.…
+$ comp_asa   &lt;dbl&gt; 90.51, 89.42, 89.32, 90.57, 87.42, 58.10, 63.15, 60.84, 55.…
+$ com_cauda  &lt;dbl&gt; 67.38, 73.13, 70.69, 71.10, 68.93, 36.14, 39.34, 33.10, 33.…
+$ comp_tarso &lt;dbl&gt; 19.06, 20.09, 18.01, 19.64, 17.05, 16.92, 18.50, 18.85, 18.…
+$ comp_bico  &lt;dbl&gt; 14.28, 13.78, 12.49, 12.61, 10.31, 10.30, 8.13, 9.68, 8.70,…
+$ larg_bico  &lt;dbl&gt; 4.33, 4.73, 3.64, 3.83, 3.74, 5.83, 5.32, 5.48, 5.47, 5.71,…
+$ alt_bico   &lt;dbl&gt; 3.65, 4.04, 4.04, 3.74, 3.66, 5.53, 6.27, 7.12, 6.87, 7.40,…</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Medidas-resumo</h2>
+<p><strong>Medidas de posição</strong></p>
+<p><br></p>
+<ul>
+<li><p><strong>Moda</strong>: valor mais frequente das observações</p></li>
+<li><p><strong>Mediana</strong>: valor que divide as observações ordenadas em duas partes iguais</p></li>
+<li><p><strong>Média aritmética</strong>: soma das observações dividida pelo número de observações</p></li>
+<li><p><strong>Outras médias</strong>: ponderada, geométrica e harmônica</p></li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Medidas-resumo</h2>
+<p><strong>Medidas de dispersão</strong></p>
+<p><br></p>
+<ul>
+<li><p><strong>Variância</strong>: medida de quantas observações diferem do valor central (média)</p></li>
+<li><p><strong>Desvio padrão</strong>: raiz quadrada da variância (mantêm a mesma unidade de medida)</p></li>
+<li><p><strong>Erro padrão</strong>: variação da média amostral em relação à média populacional (confiabilidade da média amostral)</p></li>
+</ul>
+</section>
+<section class="slide level2 smaller">
+<h2>Tabelas</h2>
+<p><strong>Tabelas de frequência</strong></p>
+<ul>
+<li><p><strong>Dados brutos</strong>: conjunto dos valores numéricos coletados na pesquisa</p></li>
+<li><p><strong>Classes</strong>: intervalo de valores contínuos (0 |— 1)</p></li>
+<li><p><strong>Frequência absoluta (fi)</strong>: número de vezes que uma observação aparece ou pertencente a um intervalo ou classe</p></li>
+<li><p><strong>Frequência total</strong>: soma de todas as frequências absolutas (fi)</p></li>
+<li><p><strong>Frequência relativa (fri)</strong>: valor da razão de cada frequência absoluta (fi) com a frequência total (somatório de fi)</p></li>
+<li><p><strong>Frequência acumulada (Fi)</strong>: obtida somando (acumulando) os valores da frequência absoluta (fi)</p></li>
+<li><p><strong>Frequência relativa acumulada (Fri)</strong>: obtida somando (acumulando) os valores da frequência relativa (fri)</p></li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Tabelas</h2>
+<p><strong>Tabelas de frequência</strong></p>
+<table>
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Classes</th>
+<th style="text-align: center;">Freq. absoluta (fi)</th>
+<th style="text-align: center;">Freq. relativa (fri)</th>
+<th style="text-align: center;">Freq. acumulada (Fi)</th>
+<th style="text-align: center;">Freq. relativa acumulada (Fri)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0|—1</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">0.13</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">0.13</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1|—2</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">0.26</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">0.39</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2|—3</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">0.39</td>
+<td style="text-align: center;">24</td>
+<td style="text-align: center;">0.77</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">3|—4</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.23</td>
+<td style="text-align: center;">31</td>
+<td style="text-align: center;">1.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Total</td>
+<td style="text-align: center;">31</td>
+<td style="text-align: center;">1.00</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+<h2>Gráficos</h2>
+<ul>
+<li><p>Melhor forma de apresentar, sintetizar, discutir e interpretar seus dados</p></li>
+<li><p>Necessário em quase todas as análises estatísticas</p></li>
+<li><p>Necessário em quase todas as publicações, trabalhos de consultoria, TCC, dissertação, tese, etc.</p></li>
+<li><p>Existem vários tipos de gráficos para representar os padrões em seus dados para diferentes tipos de finalidades</p></li>
+<li><p>De forma simplificada, os gráficos são representações dos nossos dados tabulares</p></li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Como mentir com estatística?</h2>
+<p><img data-src="img/cover_mentir_estatistica.jpg" class="absolute" style="top: 200px; right: 850px; width: 270px; height: 400px; "> <img data-src="img/como_mentir_est.png" class="absolute" style="top: 150px; right: -80px; width: 900px; height: 450px; "></p>
+<div class="footer">
+<p><a href="https://www.intrinseca.com.br/livro/624/">Heff (2016)</a>, <a href="https://youtu.be/r6d-RBDlc5I">Como MENTIR com ESTATÍSTICA</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Elementos de um gráfico</h2>
+<p>Representações das colunas (eixos) e linhas (elementos)</p>
+<center>
+<img src="img/plot_data_table_scatterplot.png" style="width:90%">
+</center>
+</section>
+<section class="slide level2">
+<h2>Tipos de variáveis</h2>
+<p><img data-src="img/plot_variables.png" class="absolute" style="top: 100px; right: 300px; width: 500px; height: 250px; "></p>
+<p><img data-src="img/nominal_ordinal_binary.png" class="absolute" style="top: 350px; right: 550px; width: 500px; height: 350px; "></p>
+<p><img data-src="img/continuous_discrete_inv.png" class="absolute" style="top: 350px; right: 50px; width: 500px; height: 350px; "></p>
+<div class="footer">
+<p><a href="http://greenmaths.st-andrews.ac.uk/">Matthiopoulos (2011)</a>, <a href="https://twitter.com/allison_horst">@allison_horst</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Tipos de variáveis e tipos gráficos</h2>
+<p><br></p>
+<center>
+<img src="img/ggplot_data_from_viz.png" style="width:85%">
+</center>
+<div class="footer">
+<p><a href="https://www.data-to-viz.com/">from Data to Viz</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Tipos de variáveis e tipos gráficos</h2>
+<center>
+<img src="img/r_charts_suggests.png" style="width:100%">
+</center>
+</section>
+<section class="slide level2">
+<h2>R CHARTS</h2>
+<center>
+<img src="img/rcharts-featured.png" style="width:100%">
+</center>
+<div class="footer">
+<p><a href="https://r-charts.com/">R CHARTS</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Histograma ou densidade</h2>
+<ul>
+<li><p>Representa dados de uma coluna</p></li>
+<li><p>Dados do tipo discreto ou contínuo</p></li>
+<li><p>Distribuição de frequência ou densidade</p></li>
+</ul>
+<p><img data-src="img/plot_histogram.png" class="absolute" style="top: 310px; right: 550px; width: 350px; height: 350px; "></p>
+<p><img data-src="img/plot_density.png" class="absolute" style="top: 310px; right: 100px; width: 350px; height: 350px; "></p>
+<div class="footer">
+<p><a href="https://www.data-to-viz.com/graph/histogram.html">histogram</a>, <a href="https://www.data-to-viz.com/graph/density.html">density</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Histograma</h2>
+<p><br></p>
+<center>
+<img src="img/hist_fig1.gif" style="width:80%">
+</center>
+<div class="fragment">
+<p><br></p>
+<center>
+<img src="img/hist_fig2.gif" style="width:80%">
+</center>
+<div class="footer">
+<p><a href="https://plotly.com/chart-studio-help/histogram/">Intro to Histograms</a></p>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Histograma</h2>
+<center>
+<img src="img/hist_fig3.gif" style="width:55%">
+</center>
+<div class="footer">
+<p><a href="https://plotly.com/chart-studio-help/histogram/">Intro to Histograms</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Densidade</h2>
+<p><br><br></p>
+<center>
+<img src="img/hist_fig5.jpg" style="width:100%">
+</center>
+<div class="footer">
+<p><a href="https://plotly.com/chart-studio-help/histogram/">Intro to Histograms</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Densidade</h2>
+<p><img data-src="img/hist_fig6.gif" class="absolute" style="top: 250px; right: 550px; width: 550px; height: 350px; "></p>
+<div class="fragment">
+<p><img data-src="img/hist_fig7.gif" class="absolute" style="top: 265px; right: -50px; width: 560px; height: 340px; "></p>
+<div class="footer">
+<p><a href="https://plotly.com/chart-studio-help/histogram/">Intro to Histograms</a></p>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Gráfico de caixas (<em>Box plot</em>)</h2>
+<ul>
+<li><p>Representa dados de duas colunas</p></li>
+<li><p>Dados do tipo categóricos: X = categórico e Y = contínuo</p></li>
+<li><p>Resume informações de medidas contínuas para dois ou mais fatores categóricos</p></li>
+</ul>
+<p><img data-src="img/plot_boxplot.png" class="absolute" style="top: 330px; right: 360px; width: 350px; height: 350px; "></p>
+<div class="footer">
+<p><a href="https://www.data-to-viz.com/caveat/boxplot.html">boxplot</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Gráfico de caixas (<em>Box plot</em>)</h2>
+<ul>
+<li><p>Intervalo inter-quartil (<em>interquartile range</em> - IQR)</p></li>
+<li><p>Limite inferior e limite superipor (1.5 x IQR)</p></li>
+<li><p>Valores exteriores (<em>outliers</em>)</p></li>
+</ul>
+<p><img data-src="img/plot_boxplot1.png" class="absolute" style="top: 350px; right: 520px; width: 500px; height: 280px; "> <img data-src="img/plot_boxplot2.png" class="absolute" style="top: 250px; right: 50px; width: 430px; height: 430px; "></p>
+<div class="footer">
+<p><a href="https://www.kdnuggets.com/2019/11/understanding-boxplots.html">Understanding Boxplots</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Outlier</h2>
+<p>Observação coletado de forma errônea ou devido à arredondamentos</p>
+<center>
+<img src="img/outlier.png" style="width:85%">
+</center>
+</section>
+<section class="slide level2">
+<h2>Gráfico de caixas (<em>Box plot</em>)</h2>
+<p><br></p>
+<center>
+<img src="img/boxplotfig1.gif" style="width:80%">
+</center>
+<div class="fragment">
+<center>
+<img src="img/boxplotfig2.gif" style="width:80%">
+</center>
+<div class="footer">
+<p><a href="https://plotly.com/chart-studio-help/what-is-a-box-plot/">Intro to Box Plots</a></p>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Gráfico de caixas (<em>Box plot</em>)</h2>
+<p><br></p>
+<center>
+<img src="img/boxplotfig3.gif" style="width:80%">
+</center>
+<div class="fragment">
+<center>
+<img src="img/boxplotfig4.gif" style="width:80%">
+</center>
+<div class="footer">
+<p><a href="https://plotly.com/chart-studio-help/what-is-a-box-plot/">Intro to Box Plots</a></p>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Gráfico de caixas (<em>Box plot</em>)</h2>
+<p><br></p>
+<center>
+<img src="img/boxplotfig5.gif" style="width:80%">
+</center>
+<div class="fragment">
+<p><img data-src="img/boxplotfig7.gif" class="absolute" style="top: 340px; right: -190px; width: 1000px; height: 350px; "></p>
+<div class="footer">
+<p><a href="https://plotly.com/chart-studio-help/what-is-a-box-plot/">Intro to Box Plots</a></p>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Gráfico de caixas (<em>Box plot</em>)</h2>
+<p><br></p>
+<center>
+<img src="img/boxplotfig8.gif" style="width:60%">
+</center>
+<div class="footer">
+<p><a href="https://plotly.com/chart-studio-help/what-is-a-box-plot/">Intro to Box Plots</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Gráfico de caixas (<em>Box plot</em>)</h2>
+<p><br></p>
+<center>
+<img src="img/boxplotfig9.gif" style="width:80%">
+</center>
+<div class="footer">
+<p><a href="https://plotly.com/chart-studio-help/what-is-a-box-plot/">Intro to Box Plots</a></p>
+</div>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>3. Análise de dados multivariados</h1>
+
+</section>
+<section class="slide level2">
+<h2>Dados em matrizes</h2>
+<p><br></p>
+<center>
+<img src="img/dados_matriz.png" style="width:80%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2 smaller">
+<h2>Objetos e descritores</h2>
+<ul>
+<li><strong>Objetos (1)</strong>: linhas - representam os locais ou indivíduos amostrados</li>
+<li><strong>Descritores (2)</strong>: colunas - representam as variáveis mensuradas ou contagens</li>
+</ul>
+<center>
+<img src="img/dados_matriz_linhas_colunas.png" style="width:75%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2 smaller">
+<h2>Análises no modo R e Q</h2>
+<ul>
+<li><strong>Modo R</strong>: análise da relação dos descritores (correlação e covariância)</li>
+<li><strong>Modo Q</strong>: análise da relação dos objetos (distância ou associação)</li>
+</ul>
+<center>
+<img src="img/dados_matriz_modo_rq.png" style="width:75%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2 smaller">
+<h2>Tipos de análises multivariadas</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><strong>Agrupamento</strong>: agrupar objetos mais semelhantes entre si</li>
+</ul>
+<center>
+<img src="img/dados_agrupamento.png" style="width:100%">
+</center>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><p><strong>Ordenação</strong>: ordenar objetos num espaço com menos dimensões</p>
+<center>
+<p><img src="img/dados_ordenacao.png" style="width:100%"></p>
+</center></li>
+</ul>
+</div>
+</div>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Mas antes, vamos entender o que medimos e ajustes prévios dos dados</h1>
+
+</section>
+<section class="slide level2 smaller">
+<h2>Escala de medidas</h2>
+<center>
+<img src="img/dados_medidas.png" style="width:70%">
+</center>
+<ul>
+<li><strong>Nominal</strong>: nomes sem ordem (1. pelágico ou 2. litoral)</li>
+<li><strong>Ordinal</strong>: nomes com ordem (1. argila, 2. silte, 3. areia, 4. cascalho ou 5. pedra)</li>
+<li><strong>Razão</strong>: medidas multiplicativas (biomassa, concentração, comprimento)</li>
+<li><strong>Intervalo</strong>: medidas adicionais (tempo, temperatura)</li>
+<li><strong>Contagem</strong>: enumeração (abundância)</li>
+<li><strong>Composição</strong>: proporções que somam um (areia, silte e argila)</li>
+</ul>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2 smaller">
+<h2>Escala de medidas (unidades)</h2>
+<ul>
+<li><p>Variáveis ambientais geralmente são medidas em diferentes unidades</p></li>
+<li><p>Essa diferença deve ser considera quando realizamos análises multivariadas</p></li>
+<li><p>Ex.: temperatura (ºC), distância da margem (m), área (m²), volume (m³)</p></li>
+</ul>
+<center>
+<img src="img/dados_medidas_unidades.png" style="width:45%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Transformação (<em>Transformation</em>)</h2>
+<p>Muda a escala de variação ou natureza da variável</p>
+<ul>
+<li><strong>Logaritmo</strong>: muda a escala dos valores</li>
+</ul>
+<p><span class="math display">\[x' = log_{10}(100) = 2\]</span></p>
+<center>
+<img src="img/dados_transformacao_log.png" style="width:60%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Transformação (<em>Transformation</em>)</h2>
+<p>Muda a escala de variação ou natureza da variável</p>
+<ul>
+<li><strong>Box-Cox</strong>: transformações usando potências (λ)</li>
+</ul>
+<p><span class="math display">\[x' = \frac{1}{\lambda}(x^\lambda - 1)\]</span></p>
+<center>
+<img src="img/dados_transformacao_boxcox.png" style="width:37%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Transformação (<em>Transformation</em>)</h2>
+<p>Muda a escala de variação ou natureza da variável</p>
+<ul>
+<li><strong>Dummy</strong>: variáveis categóricas são codificadas como <em>variáveis dummy</em> (0 e 1)</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">classe</th>
+<th style="text-align: center;">dummy1</th>
+<th style="text-align: center;">dummy2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">floresta</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">silvicultura</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">pastagem</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Transformação (<em>Transformation</em>)</h2>
+<p>Muda a escala de variação ou natureza da variável</p>
+<ul>
+<li><strong>Dummy</strong>: variáveis categóricas são codificadas como <em>variáveis dummy</em> (0 e 1)</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">classe</th>
+<th style="text-align: center;">dummy1</th>
+<th style="text-align: center;">dummy2</th>
+<th style="text-align: center;">dummy3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">floresta</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">silvicultura</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">pastagem</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">cana</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Transformação (<em>Transformation</em>)</h2>
+<p>Muda a escala de variação ou natureza da variável</p>
+<ul>
+<li><strong>Fuzzy</strong>: variáveis contínuas são codificadas como <em>variáveis fuzzy</em> (“baixo”, “médio” e “alto)</li>
+</ul>
+<center>
+<img src="img/dados_transformacao_fuzzy.png" style="width:100%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Padronização (<em>Standardization</em>)</h2>
+<p>Centralização das variáveis para terem a mesma variação</p>
+<center>
+<img src="img/dados_medidas_padronizacao.png" style="width:90%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Padronização (<em>Standardization</em>)</h2>
+<p><strong>Z-Score</strong>: média = 0 e desvio padrão = 1</p>
+<center>
+<img src="img/dados_medidas_padronizacao_z.png" style="width:55%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Padronização (<em>Standardization</em>)</h2>
+<ul>
+<li>valor padronizado = (valor original – media) / desvio padrao</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<center>
+<img src="img/dados_matriz_variaveis_continuas.png" style="width:100%">
+</center>
+<center>
+<img src="img/dados_matriz_variaveis_continuas_x_sd.png" style="width:100%">
+</center>
+</div><div class="column" style="width:50%;">
+<center>
+<img src="img/dados_matriz_variaveis_continuas_z.png" style="width:90%">
+</center>
+</div>
+</div>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Com os dados ajustados, vamos calcular medidas entre os objetos</h1>
+
+</section>
+<section class="slide level2 smaller">
+<h2>Medidas entre objetos</h2>
+<p>Medidas ou índices podem ser:</p>
+<ol type="1">
+<li><strong>Medidas de distância</strong>: aplicadas a dados quantitativos e não possuem limites superiores (dependem da unidade de medida)</li>
+</ol>
+<ul>
+<li>Valores de distância (d): 0 (idênticos) a ∞ (diferentes)</li>
+</ul>
+<div class="fragment">
+<ol start="2" type="1">
+<li><strong>Medidas de associação</strong>: aplicadas a diversos tipos de dados (qualitativos ou quantitativos) e possuem limite superior (similaridade é máxima (S=1) quando dois objetos são idênticos)</li>
+</ol>
+<ul>
+<li><p>Valores de similaridade (S): 0 (diferentes) a 1 (idênticos)</p></li>
+<li><p>Valores de dissimilaridade (D): 0 (idênticos) a 1 (diferentes)</p></li>
+</ul>
+<p><span class="math display">\[D = 1 - S\]</span></p>
+<div class="footer">
+<p><a href="http://www.numericalecology.com/indexen.html">Legendre &amp; Legendre (2012)</a></p>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Medidas de distância</h2>
+<p><strong>Distância Euclidiana</strong> (Dados ambientais)</p>
+<div class="columns">
+<div class="column" style="width:35%;">
+<center>
+<img src="img/pitagoras.png" style="width:100%">
+</center>
+</div><div class="column" style="width:65%;">
+<center>
+<img src="img/teorema_pitagoras.jpg" style="width:60%">
+</center>
+</div>
+</div>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Medidas de distância</h2>
+<p><strong>Distância Euclidiana</strong> (Dados ambientais)</p>
+<div class="columns">
+<div class="column" style="width:35%;">
+<center>
+<img src="img/pitagoras.png" style="width:100%">
+</center>
+</div><div class="column" style="width:65%;">
+<center>
+<img src="img/dist_euc_2d.png" style="width:100%">
+</center>
+</div>
+</div>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Medidas de distância</h2>
+<p><strong>Distância Euclidiana</strong> (Dados ambientais)</p>
+<div class="columns">
+<div class="column" style="width:35%;">
+<center>
+<img src="img/pitagoras.png" style="width:100%">
+</center>
+</div><div class="column" style="width:65%;">
+<center>
+<img src="img/dist_euc_3d.png" style="width:80%">
+</center>
+</div>
+</div>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Medidas de distância</h2>
+<p><strong>Distância Euclidiana</strong> (Dados ambientais)</p>
+<p><span class="math display">\[d_{x,y} = \sqrt{(x_1 - y_1)^2 + (x_2 - y_2)^2}\]</span> <span class="math display">\[d_{x,y} = \sqrt{(x_1 - y_1)^2 + (x_2 - y_2)^2 + (x_3 - y_3)^2}\]</span> <span class="math display">\[d_{x,y} = \sqrt{\sum_{j=1}^{J}(x_j - y_j)^2}\]</span></p>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Medidas de distância</h2>
+<p><strong>Distância Euclidiana</strong> (Dados ambientais)</p>
+<ul>
+<li>Sem padronização</li>
+</ul>
+<p><span class="math display">\[d_{s29,s30} = \sqrt{(51 - 90)^2 + (6.0 - 1.9)^2 + (3.0 - 2.9)^2} = 48.17\]</span></p>
+<ul>
+<li>Com padronização</li>
+</ul>
+<p><span class="math display">\[d_{s29,s30} = \sqrt{(-1.5 - 1.6)^2 + (.7 - (-1.2))^2 + (-.2 - (-.6))^2} = 3.6\]</span></p>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Com as distâncias entre objetos calculadas, vamos relacionar esses objetos</h1>
+
+</section>
+<section class="slide level2">
+<h2>Medidas de distância</h2>
+<p><strong>Matriz de distântica Euclidiana</strong></p>
+<center>
+<img src="img/matriz_dist.png" style="width:75%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Medidas de associação</h2>
+<p><strong>Dissimilaridade de Bray-Curtis</strong> (Abundância de espécies)</p>
+<center>
+<img src="img/diss_bray_curtis.png" style="width:75%">
+</center>
+<p><span class="math display">\[b_{i,i'} = \frac{\sum_{j = 1}^{J}{|n_{ij} - n_{i'j}|}}{n_{i+} + n_{i'+}}\]</span> <span class="math display">\[b_{s29,s30} = \frac{|11 - 24| + |0 - 37| + |7 - 5| + |8 - 18| + |0 - 1|}{26 + 85} = 0.568\]</span></p>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Medidas de associação</h2>
+<p><strong>Matriz de dissimilaridade de Bray-Curtis</strong></p>
+<center>
+<img src="img/matriz_dist_bray.png" style="width:75%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Medidas de associação</h2>
+<p><strong>Dissimilaridade de Jaccard</strong> (Indidência de espécies)</p>
+<p><br></p>
+<center>
+<img src="img/matriz_incidencia.png" style="width:100%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2 smaller">
+<h2>Medidas de associação</h2>
+<p><strong>Dissimilaridade de Jaccard</strong> (Indidência de espécies)</p>
+<center>
+<img src="img/matriz_22.png" style="width:50%">
+</center>
+<p><span class="math display">\[j_{ii'} = 1 - \frac{a}{a + b + c}\]</span> Onde:</p>
+<p>a = número de espécies compartilhadas</p>
+<p>b = número de espécies exclusivas do local 1</p>
+<p>c = número de espécies exclusivas do local 2</p>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Medidas de associação</h2>
+<p><strong>Dissimilaridade de Jaccard</strong> (Indidência de espécies)</p>
+<center>
+<img src="img/matriz_incidencia_calculo.png" style="width:50%">
+</center>
+<p><span class="math display">\[j_{ii'} = 1 - \frac{a}{a + b + c}\]</span> <span class="math display">\[j_{AB} = 1 - \frac{4}{4 + 3 + 1} = 0.5\]</span></p>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Medidas de associação</h2>
+<p><strong>Matriz de dissimilaridade de Jaccard</strong></p>
+<p><br></p>
+<center>
+<img src="img/cluster_01.png" style="width:100%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2 smaller">
+<h2>Tipos de análises multivariadas</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><strong>Agrupamento</strong>: agrupar objetos mais semelhantes entre si</li>
+</ul>
+<center>
+<img src="img/dados_agrupamento.png" style="width:100%">
+</center>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><p><strong>Ordenação</strong>: ordenar objetos num espaço com menos dimensões</p>
+<center>
+<p><img src="img/dados_ordenacao.png" style="width:100%"></p>
+</center></li>
+</ul>
+</div>
+</div>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2 smaller">
+<h2>Tipos de análises de agrupamento</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><strong>Hierárquico</strong>: objetos de um grupo se tornam elementos do grupo superior</li>
+</ul>
+<center>
+<img src="img/dados_agrupamento.png" style="width:100%">
+</center>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><p><strong>Não-hierárquico</strong>: define-se k grupos e aloca-se os objetos aos grupos</p>
+<center>
+<p><img src="img/kmeans3.gif" style="width:150%"></p>
+</center></li>
+</ul>
+</div>
+</div>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Análises de agrupamento (<em>Cluster</em>)</h2>
+<p><strong>1. Pares mais parecidos (menor dissimilaridade) = (B,F)</strong></p>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><br><br></p>
+<center>
+<img src="img/cluster_02.png" style="width:100%">
+</center>
+</div><div class="column" style="width:35%;">
+<p><br><br></p>
+<center>
+<img src="img/cluster_03.png" style="width:100%">
+</center>
+</div>
+</div>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Análises de agrupamento (<em>Cluster</em>)</h2>
+<p><strong>2. Recalcular a distância do grupo (B,F) para os demais</strong></p>
+<p><br></p>
+<center>
+<img src="img/cluster_04.png" style="width:100%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Análises de agrupamento (<em>Cluster</em>)</h2>
+<p><strong>3. Pares mais parecidos (menor dissimilaridade) = (A,E)</strong></p>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><br><br></p>
+<center>
+<img src="img/cluster_05.png" style="width:100%">
+</center>
+</div><div class="column" style="width:35%;">
+<p><br><br></p>
+<center>
+<img src="img/cluster_06.png" style="width:100%">
+</center>
+</div>
+</div>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Análises de agrupamento (<em>Cluster</em>)</h2>
+<p><strong>4. Recalcular a distância do grupo (A,E) para os demais</strong></p>
+<p><br></p>
+<center>
+<img src="img/cluster_07.png" style="width:90%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Análises de agrupamento (<em>Cluster</em>)</h2>
+<p><strong>5. Pares mais parecidos (menor dissimilaridade) = (C,G)</strong></p>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><br><br></p>
+<center>
+<img src="img/cluster_08.png" style="width:100%">
+</center>
+</div><div class="column" style="width:35%;">
+<p><br><br></p>
+<center>
+<img src="img/cluster_09.png" style="width:100%">
+</center>
+</div>
+</div>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Análises de agrupamento (<em>Cluster</em>)</h2>
+<p><strong>6. Recalcular a distância do grupo (C,G) para os demais</strong></p>
+<p><br></p>
+<center>
+<img src="img/cluster_10.png" style="width:80%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Análises de agrupamento (<em>Cluster</em>)</h2>
+<p><strong>7. Pares mais parecidos (menor dissimilaridade) = (A,E),(C,G)</strong></p>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><br><br></p>
+<center>
+<img src="img/cluster_11.png" style="width:100%">
+</center>
+</div><div class="column" style="width:35%;">
+<p><br><br></p>
+<center>
+<img src="img/cluster_12.png" style="width:100%">
+</center>
+</div>
+</div>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Análises de agrupamento (<em>Cluster</em>)</h2>
+<p><strong>8. Recalcular a distância do grupo (A,E,C,G) para os demais</strong></p>
+<p><br></p>
+<center>
+<img src="img/cluster_13.png" style="width:80%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Análises de agrupamento (<em>Cluster</em>)</h2>
+<p><strong>9. Pares mais parecidos (menor dissim.) = (A,E,C,G),(B,F)</strong></p>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><br><br></p>
+<center>
+<img src="img/cluster_14.png" style="width:100%">
+</center>
+</div><div class="column" style="width:35%;">
+<p><br><br></p>
+<center>
+<img src="img/cluster_15.png" style="width:100%">
+</center>
+</div>
+</div>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Análises de agrupamento (<em>Cluster</em>)</h2>
+<p><strong>10. Recalcular a distância do grupo (A,E,C,G,B,F) para o D</strong></p>
+<p><br></p>
+<center>
+<img src="img/cluster_16.png" style="width:70%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Análises de agrupamento (<em>Cluster</em>)</h2>
+<p><strong>11. Pares mais parecidos (menor dissim.) = (A,E,C,G,B,F,D)</strong></p>
+<div class="columns">
+<div class="column" style="width:65%;">
+<p><br><br></p>
+<center>
+<img src="img/cluster_17.png" style="width:100%">
+</center>
+</div><div class="column" style="width:35%;">
+<p><br><br></p>
+<center>
+<img src="img/cluster_18.png" style="width:100%">
+</center>
+</div>
+</div>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>E como saber se esse agrupamento ficou bom?</h1>
+
+</section>
+<section class="slide level2">
+<h2>Análises de agrupamento (<em>Cluster</em>)</h2>
+<p><strong>Matriz cofenética</strong></p>
+<p>Distâncias recuperadas do agrupamento hierárquico</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>          A         B         C         D         E         F
+B 0.7777778                                                  
+C 0.4285714 0.7777778                                        
+D 1.0000000 1.0000000 1.0000000                              
+E 0.2500000 0.7777778 0.4285714 1.0000000                    
+F 0.7777778 0.2000000 0.7777778 1.0000000 0.7777778          
+G 0.4285714 0.7777778 0.3333333 1.0000000 0.4285714 0.7777778</code></pre>
+</div>
+</div>
+<center>
+<img src="img/cluster_19.png" style="width:42%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Análises de agrupamento (<em>Cluster</em>)</h2>
+<p><strong>Índice de correlação cofenética (&gt; 0.7)</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1"></a><span class="co"># matriz de distância </span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>          A         B         C         D         E         F
+B 0.5000000                                                  
+C 0.4285714 0.7142857                                        
+D 1.0000000 0.8333333 1.0000000                              
+E 0.2500000 0.6666667 0.4285714 1.0000000                    
+F 0.6250000 0.2000000 0.6666667 0.8000000 0.7777778          
+G 0.3750000 0.7777778 0.3333333 0.8571429 0.3750000 0.7500000</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1"></a><span class="co"># matriz cofenetica</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>          A         B         C         D         E         F
+B 0.7777778                                                  
+C 0.4285714 0.7777778                                        
+D 1.0000000 1.0000000 1.0000000                              
+E 0.2500000 0.7777778 0.4285714 1.0000000                    
+F 0.7777778 0.2000000 0.7777778 1.0000000 0.7777778          
+G 0.4285714 0.7777778 0.3333333 1.0000000 0.4285714 0.7777778</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1"></a><span class="co"># indice de correlacao cofenetica</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9532782</code></pre>
+</div>
+</div>
+</section>
+<section class="slide level2">
+<h2>Análises de agrupamento (<em>Cluster</em>)</h2>
+<p><strong>Dendrograma</strong></p>
+<center>
+<img src="img/dendograma.png" style="width:90%">
+</center>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Mas existe mais de uma forma de ligar esse objetos</h1>
+
+</section>
+<section class="slide level2">
+<h2>Análises de agrupamento (<em>Cluster</em>)</h2>
+<p><strong>Métodos de ligação</strong></p>
+<ul>
+<li>Máximo (<em>complete</em>), mínimo (<em>single</em>) e média (<em>average</em>)</li>
+</ul>
+<p><img data-src="img/cluster_19.png" class="absolute" style="top: 300px; right: 700px; width: 400px; height: 300px; "> <img data-src="img/cluster_20.png" class="absolute" style="top: 300px; right: 300px; width: 400px; height: 300px; "> <img data-src="img/cluster_21.png" class="absolute" style="top: 300px; right: -100px; width: 400px; height: 300px; "></p>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section>
+<section class="slide level2">
+<h2>Análises de agrupamento (<em>Cluster</em>)</h2>
+<p><strong>Escolha do número de grupos</strong></p>
+<center>
+<img src="img/cluster_22.png" style="width:75%">
+</center>
+<div class="footer">
+<p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Greenacre &amp; Primicerio (2013)</a></p>
+</div>
+</section></section>
+<section class="title-slide slide level1 center">
+<h1>Dúvidas?</h1>
+
+</section>
+
+<section>
+<section class="title-slide slide level1 center">
+<h1>Aplicações</h1>
+
+</section>
+<section class="slide level2 smaller">
+<h2>Aplicações</h2>
+<ul>
+<li><p>Agrupamento de locais em termos de composição de espécies ou condições ambientais</p></li>
+<li><p>Filogenia e sistemática</p></li>
+<li><p>Diversidade filogenética e funcional</p></li>
+</ul>
+<center>
+<img src="img/agrupamento_aplicacao.jpg" style="width:70%">
+</center>
+<div class="footer">
+<p><a href="https://analises-ecologicas.com/">Da Silva et al.&nbsp;(2022)</a></p>
+</div>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Resumindo</h1>
+
+</section>
+<section class="slide level2 smaller">
+<h2>Resumindo</h2>
+<ul>
+<li><p>Linguagem R</p></li>
+<li><p>Análise Exploratória de Dados (AED): medidas-resumo, tabelas e gráficos</p></li>
+<li><p>Análise de dados multivariados</p></li>
+<li><p>Dados em matrizes, objetos e descritores, análises modo R (descritores) e Q (objetos)</p></li>
+<li><p>Dois tipos de análises: agrupamento e ordenação</p></li>
+<li><p>Escala de medida, transformação, padronização</p></li>
+<li><p>Medidas de distância (0 a ∞) e associação (S=1 e D=0)</p></li>
+<li><p>Matrizes de distância e similaridade/dissimilaridade</p></li>
+<li><p>Análise de agrupamento e dendrograma</p></li>
+<li><p>Métodos de ligação: máximo (<em>complete</em>), mínimo (<em>single</em>) e média (<em>average</em>)</p></li>
+<li><p>Escolha do número de grupos</p></li>
+<li><p>Aplicações</p></li>
+</ul>
+</section></section>
+<section>
+<section class="title-slide slide level1 center">
+<h1>Material de estudo</h1>
+
+</section>
+<section class="slide level2">
+<h2>Material de estudo</h2>
+<ul>
+<li><p><a href="https://analises-ecologicas.com/">Análises Ecológicas no R (2022)</a></p></li>
+<li><p><a href="https://www.travessa.com.br/ecologia-numerica-uma-introducao-a-analise-multivariada-de-dados-ecologicos-2-ed-2012/artigo/c19813c8-0c1d-4d56-8f63-86a90a90c02c">Ecologia numérica (2012)</a></p></li>
+<li><p><a href="https://github.com/maurobio/econum">Princípios de Ecologia Numérica: com exemplos em R (2019)</a></p></li>
+<li><p><a href="https://www.fbbva.es/microsite/multivariate-statistics/">Multivariate Analysis of Ecological Data (2013)</a></p></li>
+<li><p><a href="http://www.numericalecology.com/indexen.html">Numerical Ecology (2012)</a></p></li>
+<li><p><a href="http://www.numericalecology.com/numecolR/">Numerical Ecology with R (2018)</a></p></li>
+<li><p><a href="https://lbbe.univ-lyon1.fr/en/annuaires-des-membres/thioulouse-jean">Multivariate Analysis of Ecological Data with ade4 (2018)</a></p></li>
+</ul>
+</section>
+<section class="slide level2">
+<h2>Muito obrigado!</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Agradecimentos:</p>
+<ul>
+<li><a href="https://tsiqueiralab.weebly.com/">Prof.&nbsp;Tadeu Siqueira</a></li>
+<li><a href="https://leec.eco.br/">Prof.&nbsp;Miltinho</a></li>
+<li><a href="https://bv.fapesp.br/pt/bolsas/203713/estrutura-da-paisagem-como-preditor-da-diversidade-taxonomica-e-funcional-de-anfibios-na-mata-atlant/">Fapesp #2022/01899-6</a></li>
+</ul>
+<center>
+<img src="img/fapesp.png" style="width:70%">
+</center>
+</div><div class="column" style="width:50%;">
+<p>Contato:</p>
+<center>
+<p><a href="https://mauriciovancine.github.io/"><svg viewbox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;fill:#2268bc;" xmlns="http://www.w3.org/2000/svg"> <path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"></path></svg></a> <a href="mailto:mauricio.vancine@gmail.com"><svg viewbox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;fill:#2268bc;" xmlns="http://www.w3.org/2000/svg"> <path d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path></svg></a> <a href="https://twitter.com/mauriciovancine"><svg viewbox="0 0 512 512" style="height:1em;position:relative;display:inline-block;top:.1em;fill:#2268bc;" xmlns="http://www.w3.org/2000/svg"> <path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"></path></svg></a> <a href="https://github.com/mauriciovancine"><svg viewbox="0 0 496 512" style="height:1em;position:relative;display:inline-block;top:.1em;fill:#2268bc;" xmlns="http://www.w3.org/2000/svg"> <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg></a></p>
+<p><img src="img/gif_frogs.gif" style="width:80%"></p>
+</center>
+</div>
+</div>
+<div class="footer">
+<p>Slides por <a href="https://mauriciovancine.github.io/">Maurício Vancine</a>, feitos com <a href="https://quarto.org/">Quarto</a>. Código disponível no <a href="https://github.com/mauriciovancine/workshop-r-introduction/blob/master/01_slides/slides.qmd">GitHub</a>.</p>
+</div>
+<p><img src="img/logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+
+</div>
+</section></section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="index_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="index_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="index_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="index_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="index_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="index_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="index_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="index_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="index_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'smaller': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        text: function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copiada");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copiada");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>
